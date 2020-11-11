@@ -6,30 +6,64 @@
 //
 
 import UIKit
+import CoreData
 
-class HomeTableViewController: UITableViewController {
+class HomeTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     
-    let networkController = NetworkController()
     var houses: [Houses] = []
+    var viewContext: NSManagedObjectContext?
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<HouseMangedObject> = {
+        
+        let fetchRequest = NSFetchRequest<HouseMangedObject>(entityName:"House")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
+        
+//        if let code = code {
+//            fetchRequest.predicate = NSPredicate(format: "dept_id = %@", code)
+//        }
+        
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: viewContext!,
+                                                    sectionNameKeyPath: nil, cacheName: nil)
+        
+        controller.delegate = self
+        
+        do {
+            try controller.performFetch()
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+        return controller
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        networkController.fetchHouses(completionHandler:
-            { (houses) in DispatchQueue.main.async {
-                    self.houses = houses
-                    self.tableView.reloadData()
-                }
-        }) { (error) in DispatchQueue.main.async {
-                self.houses = []
-                self.tableView.reloadData()
-            }
-        }
+//        if let unwrappedCode = code {
+//            self.title = unwrappedCode
+//        }
+        
+        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+        viewContext = dataController.persistentContainer.viewContext
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:  #selector(reloadTable), for: UIControl.Event.valueChanged)
+
+        self.refreshControl = refreshControl
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    @objc func reloadTable() {
+        self.tableView.reloadData()
+        
+        refreshControl?.endRefreshing()
     }
 
     // MARK: - Table view data source
@@ -41,47 +75,46 @@ class HomeTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print(houses.count)
-        return houses.count
+        print("Houses data in db: ", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
+        return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath)
-
-//        if let imageView = cell.viewWithTag(100) as? UIImageView {
-//            print(news[indexPath.row].image)
-//        }
+        
+        let dbText = fetchedResultsController.object(at: indexPath).property_title
         print("Row number:", indexPath.row, ":")
-        print(houses[indexPath.row])
+        print(dbText)
         
-        var url = houses[indexPath.row].image_URL
-        if  !url.contains("https"){
-            url.insert("s", at: url.index(url.startIndex, offsetBy: 4))
-        }
-        
-        if let imageView = cell.viewWithTag(100) as? UIImageView {
-            networkController.fetchImage(for: url, completionHandler: { (data) in
-                DispatchQueue.main.async {
-                    imageView.image = UIImage(data: data, scale:1)
-                }
-            }) { (error) in
-                DispatchQueue.main.async {
-                    imageView.image = UIImage(named: "hkbu_logo")
-                }
-            }
-        }
-        
+//        var url = houses[indexPath.row].image_URL
+//        if  !url.contains("https"){
+//            url.insert("s", at: url.index(url.startIndex, offsetBy: 4))
+//        }
+//
+//        if let imageView = cell.viewWithTag(100) as? UIImageView {
+//            networkController.fetchImage(for: url, completionHandler: { (data) in
+//                DispatchQueue.main.async {
+//                    imageView.image = UIImage(data: data, scale:1)
+//                }
+//            }) { (error) in
+//                DispatchQueue.main.async {
+//                    imageView.image = UIImage(named: "hkbu_logo")
+//                }
+//            }
+//        }
+//
         if let cellLabel = cell.viewWithTag(200) as? UILabel {
-            cellLabel.text = houses[indexPath.row].property_title
+            cellLabel.text = fetchedResultsController.object(at: indexPath).property_title
         }
+//
+//        if let cellLabel = cell.viewWithTag(300) as? UILabel {
+//            cellLabel.text = houses[indexPath.row].estate
+//        }
+//
+//        if let cellLabel3 = cell.viewWithTag(400) as? UILabel {
+//            cellLabel3.text = "Rent: " + String(houses[indexPath.row].rent)
+//        }
         
-        if let cellLabel = cell.viewWithTag(300) as? UILabel {
-            cellLabel.text = houses[indexPath.row].estate
-        }
-        
-        if let cellLabel3 = cell.viewWithTag(400) as? UILabel {
-            cellLabel3.text = "Rent: " + String(houses[indexPath.row].rent)
-        }
         return cell
     }
 
@@ -120,14 +153,19 @@ class HomeTableViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        if let viewController = segue.destination as? DetailTableViewController {
+            
+            let selectedIndex = tableView.indexPathForSelectedRow!
+            
+            viewController.id = houses[selectedIndex.row].id
+        }
     }
-    */
 
 }

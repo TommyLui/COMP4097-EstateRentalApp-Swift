@@ -17,6 +17,10 @@
 		662B36E12551733E00DC481E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 662B36DF2551733E00DC481E /* LaunchScreen.storyboard */; };
 		662B36EC2551733F00DC481E /* RentalAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B36EB2551733F00DC481E /* RentalAppTests.swift */; };
 		662B36F72551733F00DC481E /* RentalAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B36F62551733F00DC481E /* RentalAppUITests.swift */; };
+		66857C60255C0621004A8473 /* RentalAppModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 66857C5E255C0621004A8473 /* RentalAppModel.xcdatamodeld */; };
+		66857C66255C08DF004A8473 /* HouseMangedObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66857C64255C08DF004A8473 /* HouseMangedObject+CoreDataClass.swift */; };
+		66857C6F255C0B03004A8473 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66857C6E255C0B03004A8473 /* DetailTableViewController.swift */; };
+		66857C74255C1227004A8473 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66857C73255C1227004A8473 /* DataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +57,10 @@
 		662B36F22551733F00DC481E /* RentalAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RentalAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		662B36F62551733F00DC481E /* RentalAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentalAppUITests.swift; sourceTree = "<group>"; };
 		662B36F82551733F00DC481E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		66857C5F255C0621004A8473 /* RentalAppModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RentalAppModel.xcdatamodel; sourceTree = "<group>"; };
+		66857C64255C08DF004A8473 /* HouseMangedObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HouseMangedObject+CoreDataClass.swift"; sourceTree = "<group>"; };
+		66857C6E255C0B03004A8473 /* DetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
+		66857C73255C1227004A8473 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +91,8 @@
 		662B36C82551733D00DC481E = {
 			isa = PBXGroup;
 			children = (
+				66857C64255C08DF004A8473 /* HouseMangedObject+CoreDataClass.swift */,
+				66857C73255C1227004A8473 /* DataController.swift */,
 				662B36D32551733D00DC481E /* RentalApp */,
 				662B36EA2551733F00DC481E /* RentalAppTests */,
 				662B36F52551733F00DC481E /* RentalAppUITests */,
@@ -107,7 +117,9 @@
 				662B36D62551733D00DC481E /* SceneDelegate.swift */,
 				662B36D82551733D00DC481E /* ViewController.swift */,
 				662B36DA2551733D00DC481E /* Main.storyboard */,
+				66857C6E255C0B03004A8473 /* DetailTableViewController.swift */,
 				3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */,
+				66857C5E255C0621004A8473 /* RentalAppModel.xcdatamodeld */,
 				3670BBEA255BE50000C30AEA /* NetworkController.swift */,
 				662B36DD2551733E00DC481E /* Assets.xcassets */,
 				662B36DF2551733E00DC481E /* LaunchScreen.storyboard */,
@@ -267,8 +279,12 @@
 				3670BBEB255BE50000C30AEA /* NetworkController.swift in Sources */,
 				3670BBE3255BDD8400C30AEA /* HomeTableViewController.swift in Sources */,
 				662B36D92551733D00DC481E /* ViewController.swift in Sources */,
+				66857C60255C0621004A8473 /* RentalAppModel.xcdatamodeld in Sources */,
+				66857C74255C1227004A8473 /* DataController.swift in Sources */,
+				66857C6F255C0B03004A8473 /* DetailTableViewController.swift in Sources */,
 				662B36D52551733D00DC481E /* AppDelegate.swift in Sources */,
 				662B36D72551733D00DC481E /* SceneDelegate.swift in Sources */,
+				66857C66255C08DF004A8473 /* HouseMangedObject+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,6 +611,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		66857C5E255C0621004A8473 /* RentalAppModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				66857C5F255C0621004A8473 /* RentalAppModel.xcdatamodel */,
+			);
+			currentVersion = 66857C5F255C0621004A8473 /* RentalAppModel.xcdatamodel */;
+			path = RentalAppModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 662B36C92551733D00DC481E /* Project object */;
 }

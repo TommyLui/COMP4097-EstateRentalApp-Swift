@@ -28,8 +28,6 @@ class NetworkController {
                     return
             }
             
-            print(data)
-            
             guard let data = data, let houses =
                 try? JSONDecoder().decode([Houses].self, from: data) else {
                     errorHandler(nil)
@@ -42,7 +40,6 @@ class NetworkController {
         }
         
         print("Finish fetch houses data")
-        print()
         
         task.resume()
     }
