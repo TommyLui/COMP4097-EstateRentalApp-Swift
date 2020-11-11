@@ -20,6 +20,8 @@ class NetworkController {
                 return
             }
             
+            print("fetch data: ", data)
+            
             guard let response = response as? HTTPURLResponse,
                 response.statusCode < 300 else {
                     // Client error encountered
@@ -38,8 +40,6 @@ class NetworkController {
             // Call our completion handler with our news
             completionHandler(houses)
         }
-        
-        print("Finish fetch houses data")
         
         task.resume()
     }

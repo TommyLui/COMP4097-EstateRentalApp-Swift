@@ -47,76 +47,41 @@ class DataController {
     }
     
     private func seedData() {
-
-        do {
-            guard let rawCatalogData = try? Data(contentsOf:
-                Bundle.main.bundleURL.appendingPathComponent("events.json")) else {
-                return
-            }
-
-            let events = try JSONDecoder().decode([Event].self, from: rawCatalogData)
-
-            persistentContainer.performBackgroundTask { (managedObjectContext) in
-
-                // Loop through the events in the JSON and add to the database
-                events.forEach { (event) in
-                    let eventManagedObject = EventManagedObject(context: managedObjectContext)
-                    eventManagedObject.id = event.id
-                    eventManagedObject.title = event.title
-                    eventManagedObject.dept_id = event.dept_id
-                    eventManagedObject.saved = event.saved
-                }
-
-                do {
-                    try managedObjectContext.save()
-                } catch {
-                    print("Could not save managed object context. \(error)")
-                }
-            }
-        } catch {
-            print("events.json was not found or is not decodable.")
-        }
+//        do {
+            networkController.fetchHouses(completionHandler:
+                            { (houses) in DispatchQueue.main.async {
+                                    self.houses = houses
+//                                    print(houses)
+                                    self.persistentContainer.performBackgroundTask { (managedObjectContext) in
+                                    // Loop through the events in the JSON and add to the database
+                                    self.houses.forEach { (house) in
+                                        let houseManagedObject = HouseManagedObject(context: managedObjectContext)
+                                        houseManagedObject.createdAt = house.createdAt
+                                        houseManagedObject.updatedAt = house.updatedAt
+                                        houseManagedObject.id = house.id
+                                        houseManagedObject.property_title = house.property_title
+                                        houseManagedObject.image_URL = house.image_URL
+                                        houseManagedObject.estate = house.estate
+                                        houseManagedObject.bedrooms = house.bedrooms
+                                        houseManagedObject.gross_area = house.gross_area
+                                        houseManagedObject.expected_tenants = house.expected_tenants
+                                        houseManagedObject.rent = house.rent
+                                        houseManagedObject.h_Property = house.h_Property
+                                        houseManagedObject.occupied = house.occupied
+                                    }
+                                    do {
+                                        try managedObjectContext.save()
+                                    } catch {
+                                        print("Could not save managed object context. \(error)")
+                                    }
+                                }
+                                }
+                        }) { (error) in DispatchQueue.main.async {
+                                self.houses = []
+                            }
+                        }
+//        } catch {
+//            print("events.json was not found or is not decodable.")
+//        }
     }
-    
-//    private func seedData() {
-//            networkController.fetchHouses(completionHandler:
-//                { (houses) in DispatchQueue.main.async {
-//                        self.houses = houses
-//                    }
-//            }) { (error) in DispatchQueue.main.async {
-//                    self.houses = []
-//                }
-//            }
-//
-//        print("check point1")
-//
-//            persistentContainer.performBackgroundTask { (managedObjectContext) in
-//                print("check point2")
-//
-//                // Loop through the houses in the JSON and add to the database
-//                houses.forEach { (house) in
-//                    print("check point3")
-//                    let houseMangedObject = HouseMangedObject(context: managedObjectContext)
-//                    houseMangedObject.createdAt = house.createdAt
-//                    houseMangedObject.updatedAt = house.updatedAt
-//                    houseMangedObject.id = house.id
-//                    houseMangedObject.property_title = house.property_title
-//                    houseMangedObject.image_URL = house.image_URL
-//                    houseMangedObject.estate = house.estate
-//                    houseMangedObject.bedrooms = house.bedrooms
-//                    houseMangedObject.gross_area = house.gross_area
-//                    houseMangedObject.expected_tenants = house.expected_tenants
-//                    houseMangedObject.rent = house.rent
-//                    houseMangedObject.h_Property = house.h_Property
-//                    houseMangedObject.occupied = house.occupied
-//                    print("check point4")
-//                }
-//
-//                do {
-//                    try managedObjectContext.save()
-//                } catch {
-//                    print("Could not save managed object context. \(error)")
-//                }
-//            }
-//    }
 }

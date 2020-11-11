@@ -12,10 +12,11 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
     
     var houses: [Houses] = []
     var viewContext: NSManagedObjectContext?
+    var networkController = NetworkController()
     
-    lazy var fetchedResultsController: NSFetchedResultsController<HouseMangedObject> = {
+    lazy var fetchedResultsController: NSFetchedResultsController<HouseManagedObject> = {
         
-        let fetchRequest = NSFetchRequest<HouseMangedObject>(entityName:"House")
+        let fetchRequest = NSFetchRequest<HouseManagedObject>(entityName:"House")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
         
 //        if let code = code {
@@ -50,6 +51,8 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:  #selector(reloadTable), for: UIControl.Event.valueChanged)
+        
+        tableView.reloadData()
 
         self.refreshControl = refreshControl
         
@@ -82,29 +85,37 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath)
         
-        let dbText = fetchedResultsController.object(at: indexPath).property_title
         print("Row number:", indexPath.row, ":")
-        print(dbText)
+//        let dbText = fetchedResultsController.object(at: indexPath).rent
+//        print(dbText)
         
-//        var url = houses[indexPath.row].image_URL
-//        if  !url.contains("https"){
-//            url.insert("s", at: url.index(url.startIndex, offsetBy: 4))
-//        }
-//
-//        if let imageView = cell.viewWithTag(100) as? UIImageView {
-//            networkController.fetchImage(for: url, completionHandler: { (data) in
-//                DispatchQueue.main.async {
-//                    imageView.image = UIImage(data: data, scale:1)
-//                }
-//            }) { (error) in
-//                DispatchQueue.main.async {
-//                    imageView.image = UIImage(named: "hkbu_logo")
-//                }
-//            }
-//        }
-//
+        var url = fetchedResultsController.object(at: indexPath).image_URL
+        if  !url.contains("https"){
+            url.insert("s", at: url.index(url.startIndex, offsetBy: 4))
+        }
+
+        if let imageView = cell.viewWithTag(100) as? UIImageView {
+            networkController.fetchImage(for: url, completionHandler: { (data) in
+                DispatchQueue.main.async {
+                    imageView.image = UIImage(data: data, scale:1)
+                }
+            }) { (error) in
+                DispatchQueue.main.async {
+                    imageView.image = UIImage(named: "hkbu_logo")
+                }
+            }
+        }
+
         if let cellLabel = cell.viewWithTag(200) as? UILabel {
             cellLabel.text = fetchedResultsController.object(at: indexPath).property_title
+        }
+        
+        if let cellLabel = cell.viewWithTag(300) as? UILabel {
+            cellLabel.text = fetchedResultsController.object(at: indexPath).estate
+        }
+        
+        if let cellLabel = cell.viewWithTag(400) as? UILabel {
+            cellLabel.text = String(fetchedResultsController.object(at: indexPath).rent)
         }
 //
 //        if let cellLabel = cell.viewWithTag(300) as? UILabel {
