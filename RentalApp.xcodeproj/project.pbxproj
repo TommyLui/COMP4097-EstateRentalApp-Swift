@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3670BBE3255BDD8400C30AEA /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */; };
+		3670BBEB255BE50000C30AEA /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3670BBEA255BE50000C30AEA /* NetworkController.swift */; };
 		662B36D52551733D00DC481E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B36D42551733D00DC481E /* AppDelegate.swift */; };
 		662B36D72551733D00DC481E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B36D62551733D00DC481E /* SceneDelegate.swift */; };
 		662B36D92551733D00DC481E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B36D82551733D00DC481E /* ViewController.swift */; };
@@ -35,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
+		3670BBEA255BE50000C30AEA /* NetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		662B36D12551733D00DC481E /* RentalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RentalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		662B36D42551733D00DC481E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		662B36D62551733D00DC481E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 				662B36D62551733D00DC481E /* SceneDelegate.swift */,
 				662B36D82551733D00DC481E /* ViewController.swift */,
 				662B36DA2551733D00DC481E /* Main.storyboard */,
+				3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */,
+				3670BBEA255BE50000C30AEA /* NetworkController.swift */,
 				662B36DD2551733E00DC481E /* Assets.xcassets */,
 				662B36DF2551733E00DC481E /* LaunchScreen.storyboard */,
 				662B36E22551733E00DC481E /* Info.plist */,
@@ -258,6 +264,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3670BBEB255BE50000C30AEA /* NetworkController.swift in Sources */,
+				3670BBE3255BDD8400C30AEA /* HomeTableViewController.swift in Sources */,
 				662B36D92551733D00DC481E /* ViewController.swift in Sources */,
 				662B36D52551733D00DC481E /* AppDelegate.swift in Sources */,
 				662B36D72551733D00DC481E /* SceneDelegate.swift in Sources */,
