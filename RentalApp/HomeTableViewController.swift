@@ -51,11 +51,16 @@ class HomeTableViewController: UITableViewController {
 //        if let imageView = cell.viewWithTag(100) as? UIImageView {
 //            print(news[indexPath.row].image)
 //        }
+        print("Row number:", indexPath.row, ":")
         print(houses[indexPath.row])
         
+        var url = houses[indexPath.row].image_URL
+        if  !url.contains("https"){
+            url.insert("s", at: url.index(url.startIndex, offsetBy: 4))
+        }
+        
         if let imageView = cell.viewWithTag(100) as? UIImageView {
-                    
-            networkController.fetchImage(for: houses[indexPath.row].image_URL, completionHandler: { (data) in
+            networkController.fetchImage(for: url, completionHandler: { (data) in
                 DispatchQueue.main.async {
                     imageView.image = UIImage(data: data, scale:1)
                 }
@@ -64,7 +69,6 @@ class HomeTableViewController: UITableViewController {
                     imageView.image = UIImage(named: "hkbu_logo")
                 }
             }
-            
         }
         
         if let cellLabel = cell.viewWithTag(200) as? UILabel {
@@ -75,8 +79,8 @@ class HomeTableViewController: UITableViewController {
             cellLabel.text = houses[indexPath.row].estate
         }
         
-        if let cellLabel = cell.viewWithTag(300) as? UILabel {
-            cellLabel.text = String(houses[indexPath.row].rent)
+        if let cellLabel3 = cell.viewWithTag(400) as? UILabel {
+            cellLabel3.text = "Rent: " + String(houses[indexPath.row].rent)
         }
         return cell
     }
