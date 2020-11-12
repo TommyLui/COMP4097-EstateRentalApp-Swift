@@ -1,33 +1,21 @@
 //
-//  DetailTableViewController.swift
+//  TestTableViewController.swift
 //  RentalApp
 //
-//  Created by xdeveloper on 11/11/2020.
+//  Created by tommylui on 12/11/2020.
 //
 
 import UIKit
 import CoreData
 
-class DetailTableViewController: UITableViewController {
-    
-    var id: String?
-    var houseDetail: [Houses] = []
-    var networkController = NetworkController()
+class TestTableViewController: UITableViewController {
+    var houses: [Houses] = []
     var viewContext: NSManagedObjectContext?
     
     lazy var fetchedResultsController: NSFetchedResultsController<HouseManagedObject> = {
         
         let fetchRequest = NSFetchRequest<HouseManagedObject>(entityName:"House")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
-        
-        if let id = id {
-            print("id search: ", id)
-            fetchRequest.predicate = NSPredicate(format: "property_title == %@", id)
-        }
-        
-//        if let id = id {
-//            fetchRequest.predicate = NSPredicate(format: "id = %@", id)
-//        }
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: viewContext!,
@@ -47,15 +35,46 @@ class DetailTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
         viewContext = dataController.persistentContainer.viewContext
-        
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func tableView(_ tableView: UITableView,
+                            trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let saveAction = self.contextualSaveAction(forRowAtIndexPath: indexPath)
+        let swipeConfig = UISwipeActionsConfiguration(actions: [saveAction])
+        
+        return swipeConfig
+    }
+    
+    func contextualSaveAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+            
+        let action = UIContextualAction(style: .normal, title: "Save") {
+            (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            
+            let house = self.fetchedResultsController.object(at: indexPath)
+            house.id = 1324561
+            
+            do {
+                // Save The object
+                try self.viewContext?.save()
+                
+            } catch {
+                print("Could not save managed object context. \(error)")
+            }
+            
+            completionHandler(true)
+        }
+        
+        return action
     }
 
     // MARK: - Table view data source
@@ -67,49 +86,56 @@ class DetailTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-//        print("section", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
         return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath)
         
-        let estate = String(fetchedResultsController.object(at: indexPath).estate!)
-        let bedrooms = String(fetchedResultsController.object(at: indexPath).bedrooms)
-        let rent = String(fetchedResultsController.object(at: indexPath).rent)
-        let expected_tenants = String(fetchedResultsController.object(at: indexPath).expected_tenants)
-        let gross_area = String(fetchedResultsController.object(at: indexPath).gross_area)
+//        print(viewContext)
         
-        var url:String? = fetchedResultsController.object(at: indexPath).image_URL
-        if url != nil{
-            if  !url!.contains("https"){
-                url!.insert("s", at: url!.index(url!.startIndex, offsetBy: 4))
-            }
-        }
+//        print("Row number:", indexPath.row, ":")
+//        let dbText = fetchedResultsController.object(at: indexPath).rent
+//        print(dbText)
+        
+//        var url = fetchedResultsController.object(at: indexPath).image_URL
+//        if url != nil{
+//            if  !url.contains("https"){
+//                url.insert("s", at: url.index(url.startIndex, offsetBy: 4))
+//            }
+//        }
 
-        if let imageView = cell.viewWithTag(100) as? UIImageView {
-            networkController.fetchImage(for: url!, completionHandler: { (data) in
-                DispatchQueue.main.async {
-                    imageView.image = UIImage(data: data, scale:1)
-                }
-            }) { (error) in
-                DispatchQueue.main.async {
-                    imageView.image = UIImage(named: "hkbu_logo")
-                }
-            }
-        }
-        
+//        if let imageView = cell.viewWithTag(100) as? UIImageView {
+//            networkController.fetchImage(for: url, completionHandler: { (data) in
+//                DispatchQueue.main.async {
+//                    imageView.image = UIImage(data: data, scale:1)
+//                }
+//            }) { (error) in
+//                DispatchQueue.main.async {
+//                    imageView.image = UIImage(named: "hkbu_logo")
+//                }
+//            }
+//        }
+
         if let cellLabel = cell.viewWithTag(200) as? UILabel {
             cellLabel.text = fetchedResultsController.object(at: indexPath).property_title
         }
         
         if let cellLabel = cell.viewWithTag(300) as? UILabel {
-            cellLabel.text = "Estate: " + estate + ", Bedroom: " + bedrooms
+            cellLabel.text = fetchedResultsController.object(at: indexPath).estate
         }
         
         if let cellLabel = cell.viewWithTag(400) as? UILabel {
-            cellLabel.text = "Rent: " + rent + ", Tenants: " + expected_tenants + ", Area: " + gross_area
+            cellLabel.text = String(fetchedResultsController.object(at: indexPath).rent)
         }
+//
+//        if let cellLabel = cell.viewWithTag(300) as? UILabel {
+//            cellLabel.text = houses[indexPath.row].estate
+//        }
+//
+//        if let cellLabel3 = cell.viewWithTag(400) as? UILabel {
+//            cellLabel3.text = "Rent: " + String(houses[indexPath.row].rent)
+//        }
         
         return cell
     }
@@ -161,13 +187,14 @@ class DetailTableViewController: UITableViewController {
 
 }
 
-extension DetailTableViewController: NSFetchedResultsControllerDelegate {
+extension TestTableViewController: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChange anObject: Any, at indexPath: IndexPath?,
                     for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         tableView.reloadData()
-        print("upodate detail page")
+        print("upodate table")
+        print("viewContext: ", viewContext)
     }
 }

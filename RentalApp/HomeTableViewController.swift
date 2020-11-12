@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class HomeTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class HomeTableViewController: UITableViewController {
     
     var houses: [Houses] = []
     var viewContext: NSManagedObjectContext?
@@ -19,9 +19,6 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
         let fetchRequest = NSFetchRequest<HouseManagedObject>(entityName:"House")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
         
-//        if let code = code {
-//            fetchRequest.predicate = NSPredicate(format: "dept_id = %@", code)
-//        }
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: viewContext!,
@@ -42,20 +39,14 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        if let unwrappedCode = code {
-//            self.title = unwrappedCode
-//        }
-        
-        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
-        viewContext = dataController.persistentContainer.viewContext
-        
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:  #selector(reloadTable), for: UIControl.Event.valueChanged)
         
-        tableView.reloadData()
-
         self.refreshControl = refreshControl
         
+        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+        viewContext = dataController.persistentContainer.viewContext
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -64,13 +55,24 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
     }
     
     @objc func reloadTable() {
+        print("refresh action")
+        
+        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+        viewContext = dataController.persistentContainer.viewContext
+        
+//        do {
+//            // Save The object
+//            try self.viewContext?.deletedObjects
+//        } catch {
+//            print("Could not save managed object context. \(error)")
+//        }
         self.tableView.reloadData()
         
         refreshControl?.endRefreshing()
     }
 
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -78,24 +80,30 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("Houses data in db: ", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
+        print("Houses data number in db: ", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
         return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath)
         
-        print("Row number:", indexPath.row, ":")
+//        print(fetchedResultsController.object(at: indexPath).id)
+        
+//        print(viewContext)
+        
+//        print("Row number:", indexPath.row, ":")
 //        let dbText = fetchedResultsController.object(at: indexPath).rent
 //        print(dbText)
         
-        var url = fetchedResultsController.object(at: indexPath).image_URL
-        if  !url.contains("https"){
-            url.insert("s", at: url.index(url.startIndex, offsetBy: 4))
+        var url:String? = fetchedResultsController.object(at: indexPath).image_URL
+        if url != nil{
+            if  !url!.contains("https"){
+                url!.insert("s", at: url!.index(url!.startIndex, offsetBy: 4))
+            }
         }
 
         if let imageView = cell.viewWithTag(100) as? UIImageView {
-            networkController.fetchImage(for: url, completionHandler: { (data) in
+            networkController.fetchImage(for: url!, completionHandler: { (data) in
                 DispatchQueue.main.async {
                     imageView.image = UIImage(data: data, scale:1)
                 }
@@ -163,20 +171,33 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
         return true
     }
     */
-
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        print("prepare runed")
         
-        if let viewController = segue.destination as? DetailTableViewController {
-            
+        if let viewController = segue.destination as? DetailTableViewController{
             let selectedIndex = tableView.indexPathForSelectedRow!
+            print(selectedIndex)
             
-            viewController.id = houses[selectedIndex.row].id
+            viewController.id = fetchedResultsController.object(at: selectedIndex).property_title
+            
+            print("id passed: ", viewController.id)
         }
     }
+}
 
+extension HomeTableViewController: NSFetchedResultsControllerDelegate {
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any, at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        tableView.reloadData()
+        print("upodate table page")
+    }
 }

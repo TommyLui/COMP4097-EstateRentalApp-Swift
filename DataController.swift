@@ -11,7 +11,7 @@ import CoreData
 class DataController {
     
     var persistentContainer: NSPersistentContainer
-    var shouldSeedDatabase: Bool = true
+    var shouldSeedDatabase: Bool = false
     let networkController = NetworkController()
     var houses: [Houses] = []
     
@@ -38,16 +38,16 @@ class DataController {
             
             // Called once initialization of Core Data stack is complete
             DispatchQueue.main.async {
-//                if (self.shouldSeedDatabase) {
+                if (self.shouldSeedDatabase) {
                     self.seedData()
-//                }
+                }
                 completion()
             }
         }
     }
     
     private func seedData() {
-//        do {
+        print("seedData called")
             networkController.fetchHouses(completionHandler:
                             { (houses) in DispatchQueue.main.async {
                                     self.houses = houses
@@ -68,8 +68,10 @@ class DataController {
                                         houseManagedObject.rent = house.rent
                                         houseManagedObject.h_Property = house.h_Property
                                         houseManagedObject.occupied = house.occupied
+                                        print("data save")
                                     }
                                     do {
+                                        print("managedObjectContext save")
                                         try managedObjectContext.save()
                                     } catch {
                                         print("Could not save managed object context. \(error)")
@@ -80,8 +82,5 @@ class DataController {
                                 self.houses = []
                             }
                         }
-//        } catch {
-//            print("events.json was not found or is not decodable.")
-//        }
     }
 }
