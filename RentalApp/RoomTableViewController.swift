@@ -39,6 +39,7 @@ class RoomTableViewController: UITableViewController {
         // cell.textLabel?.text = "Section number: \(indexPath.section), Row number: \(indexPath.row)"
         
         cell.textLabel?.text = roomMenu[indexPath.row]
+        //testing
         
         return cell
     }
