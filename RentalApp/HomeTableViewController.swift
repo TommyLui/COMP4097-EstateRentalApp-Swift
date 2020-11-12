@@ -56,16 +56,9 @@ class HomeTableViewController: UITableViewController {
     
     @objc func reloadTable() {
         print("refresh action")
+//        let dataControllerNew = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+//        viewContext = dataControllerNew.persistentContainer.viewContext
         
-        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
-        viewContext = dataController.persistentContainer.viewContext
-        
-//        do {
-//            // Save The object
-//            try self.viewContext?.deletedObjects
-//        } catch {
-//            print("Could not save managed object context. \(error)")
-//        }
         self.tableView.reloadData()
         
         refreshControl?.endRefreshing()
