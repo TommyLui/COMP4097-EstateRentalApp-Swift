@@ -9,6 +9,7 @@ import UIKit
 
 class LoginViewController: UIViewController {
     var logStatus : Bool?
+    var networkController = NetworkController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,14 +23,21 @@ class LoginViewController: UIViewController {
     @IBAction func loginBtn(_ sender: UIButton) {
         if let accountText = self.view.viewWithTag(100) as? UITextField {
                 print(accountText.text!)
-            }
-        if let passwordText = self.view.viewWithTag(200) as? UITextField {
+            if let passwordText = self.view.viewWithTag(200) as? UITextField {
                 print(passwordText.text!)
+                
+                networkController.fetchLogin(completionHandler: { (data) in
+                    DispatchQueue.main.async {
+                        print("fetch login success")
+                    }
+                }) { (error) in
+                    DispatchQueue.main.async {
+                        print("fetch login fail")                    }
+                }
+                
+                
             }
-        
-        
-        
-        
+        }
     }
     /*
     // MARK: - Navigation
