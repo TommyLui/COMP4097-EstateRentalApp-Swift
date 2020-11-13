@@ -11,6 +11,7 @@ import CoreData
 class DetailTableViewController: UITableViewController {
     
     var id: String?
+    var roomSelect: Any?
     var houseDetail: [Houses] = []
     var networkController = NetworkController()
     var viewContext: NSManagedObjectContext?
@@ -20,14 +21,21 @@ class DetailTableViewController: UITableViewController {
         let fetchRequest = NSFetchRequest<HouseManagedObject>(entityName:"House")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
         
-        if let id = id {
-            print("id search: ", id)
-            fetchRequest.predicate = NSPredicate(format: "property_title == %@", id)
-        }
-        
 //        if let id = id {
 //            fetchRequest.predicate = NSPredicate(format: "id = %@", id)
 //        }
+        
+//        if let id = id {
+//            print("id search: ", id)
+//            fetchRequest.predicate = NSPredicate(format: "property_title == %@", id)
+//        }
+        
+//      if let id = id {
+        //            print("id search: ", id)
+        //            fetchRequest.predicate = NSPredicate(format: "property_title == %@", id)
+        //        }
+        
+        
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: viewContext!,
@@ -48,7 +56,7 @@ class DetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+        let dataController = AppDelegate.dataController!
         viewContext = dataController.persistentContainer.viewContext
         
         // Uncomment the following line to preserve selection between presentations

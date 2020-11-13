@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class HomeTableViewController: UITableViewController {
+class HomeTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     
     var houses: [Houses] = []
     var viewContext: NSManagedObjectContext?
@@ -21,7 +21,7 @@ class HomeTableViewController: UITableViewController {
         
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                    managedObjectContext: viewContext!,
+                                                    managedObjectContext: AppDelegate.dataController!.persistentContainer.viewContext,
                                                     sectionNameKeyPath: nil, cacheName: nil)
         
         controller.delegate = self
@@ -44,7 +44,7 @@ class HomeTableViewController: UITableViewController {
         
         self.refreshControl = refreshControl
         
-        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+        let dataController = AppDelegate.dataController!
         viewContext = dataController.persistentContainer.viewContext
 
         // Uncomment the following line to preserve selection between presentations
@@ -182,9 +182,6 @@ class HomeTableViewController: UITableViewController {
             print("id passed: ", viewController.id)
         }
     }
-}
-
-extension HomeTableViewController: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChange anObject: Any, at indexPath: IndexPath?,
@@ -194,3 +191,14 @@ extension HomeTableViewController: NSFetchedResultsControllerDelegate {
         print("upodate table page")
     }
 }
+
+//extension HomeTableViewController: NSFetchedResultsControllerDelegate {
+//
+//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+//                    didChange anObject: Any, at indexPath: IndexPath?,
+//                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+//
+//        tableView.reloadData()
+//        print("upodate table page")
+//    }
+//}

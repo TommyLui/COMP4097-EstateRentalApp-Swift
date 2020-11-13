@@ -11,7 +11,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //    var locationManager: CLLocationManager?
-    var dataController: DataController?
+    static var dataController: DataController?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        locationManager?.requestWhenInUseAuthorization()
         
         // Initialize the Core Data stack
-        dataController = DataController() {
+        AppDelegate.dataController = DataController() {
             print("Core Data stack has been initialized.")
         }
         
