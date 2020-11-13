@@ -6,11 +6,57 @@
 //
 
 import UIKit
+import CoreData
 
 class HouseListTableViewController: UITableViewController {
+    
+    var roomSelect: Int?
+    var estateSelect: String?
+    var houseDetail: [Houses] = []
+    var networkController = NetworkController()
+    var viewContext: NSManagedObjectContext?
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<HouseManagedObject> = {
+        
+        let fetchRequest = NSFetchRequest<HouseManagedObject>(entityName:"House")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
+        
+        if let roomSelect = roomSelect {
+            if roomSelect as! Int == 0 {
+                fetchRequest.predicate = NSPredicate(format: "bedrooms <= 2")
+            }
+            if roomSelect as! Int == 1 {
+                fetchRequest.predicate = NSPredicate(format: "bedrooms >= 3")
+            }
+            print("rooom search: ", roomSelect)
+        }
+        
+        if let estateSelect = estateSelect {
+            fetchRequest.predicate = NSPredicate(format: "estate = %@", estateSelect)
+        }
+        
+        
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: viewContext!,
+                                                    sectionNameKeyPath: nil, cacheName: nil)
+        
+        controller.delegate = self
+        
+        do {
+            try controller.performFetch()
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let dataController = AppDelegate.dataController!
+        viewContext = dataController.persistentContainer.viewContext
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -28,18 +74,19 @@ class HouseListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        print("Houses list number in db: ", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
+        return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HouseListCell", for: indexPath)
+        
+        // cell.textLabel?.text = "Section number: \(indexPath.section), Row number: \(indexPath.row)"
+        
+        cell.textLabel?.text = fetchedResultsController.object(at: indexPath).property_title
+        
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -76,14 +123,33 @@ class HouseListTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        print("prepare runed")
+        
+        if let viewController = segue.destination as? DetailTableViewController{
+            let selectedIndex = tableView.indexPathForSelectedRow!
+            print(selectedIndex)
+            
+            viewController.id = fetchedResultsController.object(at: selectedIndex).id
+            
+            print("id passed: ", viewController.id)
+        }
     }
-    */
+}
 
+extension HouseListTableViewController: NSFetchedResultsControllerDelegate {
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any, at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        tableView.reloadData()
+        print("upodate houses list page")
+    }
 }

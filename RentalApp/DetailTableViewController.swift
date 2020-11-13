@@ -11,7 +11,6 @@ import CoreData
 class DetailTableViewController: UITableViewController {
     
     var id: Double?
-    var roomSelect: Any?
     var houseDetail: [Houses] = []
     var networkController = NetworkController()
     var viewContext: NSManagedObjectContext?

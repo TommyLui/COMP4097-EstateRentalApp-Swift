@@ -6,12 +6,42 @@
 //
 
 import UIKit
+import CoreData
 
 class EstateTableViewController: UITableViewController {
+    
+    var viewContext: NSManagedObjectContext?
+    var estateList: [String?] = []
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<HouseManagedObject> = {
+        
+        let fetchRequest = NSFetchRequest<HouseManagedObject>(entityName:"House")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
+        
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: viewContext!,
+                                                    sectionNameKeyPath: nil, cacheName: nil)
+        
+        fetchRequest.returnsDistinctResults = true
+        fetchRequest.propertiesToFetch = ["estate"]
+        controller.delegate = self
+        
+        do {
+            try controller.performFetch()
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        let dataController = AppDelegate.dataController!
+        viewContext = dataController.persistentContainer.viewContext
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -28,19 +58,18 @@ class EstateTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "EstateCell", for: indexPath)
+        
+        // cell.textLabel?.text = "Section number: \(indexPath.section), Row number: \(indexPath.row)"
+        
+        cell.textLabel?.text = fetchedResultsController.object(at: indexPath).estate
+        
         return cell
     }
-    */
-
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -76,14 +105,35 @@ class EstateTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        print("prepare runed")
+        
+        if let viewController = segue.destination as? HouseListTableViewController{
+            let selectedIndex = tableView.indexPathForSelectedRow!
+            print(selectedIndex)
+            
+            viewController.estateSelect = fetchedResultsController.object(at: selectedIndex).estate
+            
+            print("estateSelect passed: ", viewController.estateSelect!)
+        }
     }
-    */
+    
 
+}
+
+extension EstateTableViewController: NSFetchedResultsControllerDelegate {
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any, at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        tableView.reloadData()
+        print("upodate estate page")
+    }
 }

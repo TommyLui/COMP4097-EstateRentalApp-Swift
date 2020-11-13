@@ -40,7 +40,6 @@ class RoomTableViewController: UITableViewController {
         // cell.textLabel?.text = "Section number: \(indexPath.section), Row number: \(indexPath.row)"
         
         cell.textLabel?.text = roomMenu[indexPath.row]
-        //testing
         
         return cell
     }
@@ -89,7 +88,7 @@ class RoomTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
         print("prepare runed")
         
-        if let viewController = segue.destination as? DetailTableViewController{
+        if let viewController = segue.destination as? HouseListTableViewController{
             let selectedIndex = tableView.indexPathForSelectedRow!
             print(selectedIndex)
             
