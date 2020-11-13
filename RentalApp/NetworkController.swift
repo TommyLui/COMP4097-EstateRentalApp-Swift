@@ -75,25 +75,20 @@ class NetworkController {
     }
     
     //userID: String, userPW:String,
-    //func fetchLogin(for loginUrl: String, completionHandler: @escaping (Data) -> (), errorHandler: @escaping (Error?) -> ()) {
-    
-    func fetchLogin(completionHandler: @escaping (Data) -> (),
+    func fetchLogin(completionHandler: @escaping (UserInfo) -> (),
                     errorHandler: @escaping (Error?) -> ()) {
 
            let parameters = ["username": "Brittany", "password": "Hutt"]
 
-           //create the url with URL
-           let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/login")! //change the url
+           let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/login")!
 
-           //create the session object
            let session = URLSession.shared
 
-           //now create the URLRequest object using the url object
            var request = URLRequest(url: url)
-           request.httpMethod = "POST" //set http method as POST
+           request.httpMethod = "POST"
 
            do {
-               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) // pass dictionary to nsdata object and set it as request body
+               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
            } catch let error {
                print(error.localizedDescription)
            }
@@ -101,76 +96,46 @@ class NetworkController {
            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
            request.addValue("application/json", forHTTPHeaderField: "Accept")
 
-           //create dataTask using the session object to send data to the server
            let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-
                guard error == nil else {
                    return
                }
-
-               guard let data = data else {
+            
+               /*guard let data = data else {
                    return
-               }
-
-               do {
-                   //create json object from data
-                   if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
-                       print("json: ", json)
-                       // handle json...
-                    if let response = response as? HTTPURLResponse{
-                        print(response.statusCode)
-                    }
-                    }
-               } catch let error {
-                   print(error.localizedDescription)
-               }
-           })
-           task.resume()
-        
-    }
-    
-    /*
-    func fetchLogin(completionHandler: @escaping ([Houses]) -> (),
-                        errorHandler: @escaping (Error?) -> ()) {
-        
-        let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/login")!
-        
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let error = error {
-                // Server error encountered
-                errorHandler(error)
-                return
-            }
+               }*/
             
-            print("fetch data: ", data)
-            
-            guard let response = response as? HTTPURLResponse,
-                response.statusCode < 300 else {
-                    // Client error encountered
-                    errorHandler(nil)
-                    print("error response")
-                    return
-            }
-            
-            print("response code: ", response.statusCode)
-            
-            guard let data = data, let houses =
-                try? JSONDecoder().decode([Houses].self, from: data) else {
+            guard let data = data,let userInfo = try? JSONDecoder().decode(UserInfo.self, from: data) else {
                     errorHandler(nil)
                     print("error JsonDecode")
                     return
             }
+            print(data)
+
+               /*do {
+                   //create json object from data
+                   if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                    if let response = response as? HTTPURLResponse{
+                        print("fetchLogin response code: ", response.statusCode)
+                    }
+                    print("fetchLogin json: ", json)
+                   }
+               } catch let error {
+                   print(error.localizedDescription)
+               }*/
             
-            // Call our completion handler with our news
-            completionHandler(houses)
-        }
+            /*guard let userInfo =
+                try? JSONDecoder().decode([UserInfo].self, from: data) else {
+                    errorHandler(nil)
+                    print("error JsonDecode")
+                    return
+            }*/
+            completionHandler(userInfo)
+           })
+           task.resume()
         
-        task.resume()
     }
-*/
  }
-
-
 
 struct Houses: Codable {
     let createdAt: Double
@@ -185,4 +150,13 @@ struct Houses: Codable {
     let rent: Double
     let h_Property: String
     let occupied: String?
+}
+
+struct UserInfo: Codable {
+    let createdAt: Int
+    let updatedAt: Int
+    let id: Int
+    let username: String
+    let role: String
+    let avatar: String
 }

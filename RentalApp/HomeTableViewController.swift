@@ -118,14 +118,6 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
         if let cellLabel = cell.viewWithTag(400) as? UILabel {
             cellLabel.text = String(fetchedResultsController.object(at: indexPath).rent)
         }
-//
-//        if let cellLabel = cell.viewWithTag(300) as? UILabel {
-//            cellLabel.text = houses[indexPath.row].estate
-//        }
-//
-//        if let cellLabel3 = cell.viewWithTag(400) as? UILabel {
-//            cellLabel3.text = "Rent: " + String(houses[indexPath.row].rent)
-//        }
         
         return cell
     }

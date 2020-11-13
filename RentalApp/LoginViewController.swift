@@ -10,6 +10,7 @@ import UIKit
 class LoginViewController: UIViewController {
     var logStatus : Bool?
     var networkController = NetworkController()
+    //var userInfo : UserInfo?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,11 +29,22 @@ class LoginViewController: UIViewController {
                 
                 networkController.fetchLogin(completionHandler: { (data) in
                     DispatchQueue.main.async {
-                        print("fetch login success")
-                    }
+                        self.performSegueToReturnBack()
+                        print(data.username)
+                        print(data.avatar)
+                        
+                        //存入使用者ID
+                         userDefaults.set(IDTextFeild.text, forKey: "userID")
+                        //存入使用者密碼
+                                userDefaults.set(passwordTextField.text, forKey: "userPassword")
+                        
+                        //取值
+                        userDefaults.value(forKey: "userID")
+                        userDefaults.value(forKey: "userPassword")                    }
                 }) { (error) in
                     DispatchQueue.main.async {
-                        print("fetch login fail")                    }
+                        print("login fail")
+                    }
                 }
                 
                 
@@ -48,4 +60,14 @@ class LoginViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
+
+extension UIViewController {
+    func performSegueToReturnBack()  {
+        if let nav = self.navigationController {
+            nav.popViewController(animated: true)
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
 }
