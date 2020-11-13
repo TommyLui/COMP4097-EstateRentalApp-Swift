@@ -101,41 +101,89 @@ class NetworkController {
                    return
                }
             
-               /*guard let data = data else {
-                   return
-               }*/
-            
             guard let data = data,let userInfo = try? JSONDecoder().decode(UserInfo.self, from: data) else {
                     errorHandler(nil)
                     print("error JsonDecode")
                     return
             }
-            print(data)
-
-               /*do {
-                   //create json object from data
-                   if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
-                    if let response = response as? HTTPURLResponse{
-                        print("fetchLogin response code: ", response.statusCode)
-                    }
-                    print("fetchLogin json: ", json)
-                   }
-               } catch let error {
-                   print(error.localizedDescription)
-               }*/
-            
-            /*guard let userInfo =
-                try? JSONDecoder().decode([UserInfo].self, from: data) else {
-                    errorHandler(nil)
-                    print("error JsonDecode")
-                    return
-            }*/
             completionHandler(userInfo)
            })
            task.resume()
+    }
+    
+    func fetchLogout(completionHandler: @escaping (Int) -> (),
+                    errorHandler: @escaping (Error?) -> ()) {
+            var responseCode:Int = 0
+
+           let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/logout")!
+
+           let session = URLSession.shared
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "POST"
+
+           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+           request.addValue("application/json", forHTTPHeaderField: "Accept")
+
+           let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+               guard error == nil else {
+                   return
+               }
+            
+            if let response = response as? HTTPURLResponse{
+//                    print("logout response code: ", response.statusCode)
+                responseCode = response.statusCode
+            }
+            
+            guard let response2 = response as? HTTPURLResponse,
+                response2.statusCode < 300 else {
+                    // Client error encountered
+                    errorHandler(nil)
+                    return
+            }
+            
+            completionHandler(responseCode)
+           })
+           task.resume()
+    }
+    
+    func fetchMyRental(completionHandler: @escaping ([Houses]) -> (),
+                    errorHandler: @escaping (Error?) -> ()) {
+
+           let parameters = ["username": "Brittany", "password": "Hutt"]
+
+           let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/login")!
         
+           let session = URLSession.shared
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "POST"
+
+           do {
+               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+           } catch let error {
+               print(error.localizedDescription)
+           }
+
+           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+           request.addValue("application/json", forHTTPHeaderField: "Accept")
+
+           let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+               guard error == nil else {
+                   return
+               }
+            
+            guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
+                    errorHandler(nil)
+                    print("error JsonDecode")
+                    return
+            }
+            completionHandler(houses)
+           })
+           task.resume()
     }
  }
+
 
 struct Houses: Codable {
     let createdAt: Double

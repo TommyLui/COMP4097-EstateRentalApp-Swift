@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ak0-iK-cuE">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,7 +29,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" tag="300" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HTf-4Z-yY1">
-                                <rect key="frame" x="187" y="390" width="38" height="30"/>
+                                <rect key="frame" x="36" y="390" width="341" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Login"/>
                                 <connections>
@@ -44,7 +44,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D6p-Wf-BkV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4268" y="-600"/>
+            <point key="canvasLocation" x="-4268.115942028986" y="-600"/>
         </scene>
         <!--User-->
         <scene sceneID="YOk-dI-yZp">
@@ -54,23 +54,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WYJ-6j-0f8">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WYJ-6j-0f8">
                                 <rect key="frame" x="16" y="127" width="182" height="220"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="User Name" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3xU-hG-03N">
-                                <rect key="frame" x="206" y="217" width="153" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xWn-jg-4ZX">
+                            <button opaque="NO" tag="300" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xWn-jg-4ZX">
                                 <rect key="frame" x="16" y="391" width="343" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Logoff / Login"/>
+                                <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="jumpToLogPage:" destination="i37-vR-dHR" eventType="touchUpInside" id="nlg-si-iHv"/>
                                     <action selector="logBtn:" destination="vk7-ck-5l3" eventType="touchUpInside" id="o8X-iA-Tvj"/>
@@ -84,7 +76,18 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="My Rental"/>
+                                <connections>
+                                    <action selector="myRentalBtn:" destination="vk7-ck-5l3" eventType="touchUpInside" id="xKE-7a-ExF"/>
+                                    <segue destination="tpC-6B-sdr" kind="show" id="j9d-Rr-OQU"/>
+                                </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="User Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xKu-yQ-bd7">
+                                <rect key="frame" x="206" y="215" width="166" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tb6-J3-0Uk"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -94,7 +97,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aKE-fc-sRJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="i37-vR-dHR" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-3393" y="-600"/>
+            <point key="canvasLocation" x="-3425" y="-600"/>
         </scene>
         <!--Detail-->
         <scene sceneID="xQ2-W6-4EO">
@@ -240,7 +243,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cal-xf-Wue" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3354" y="-1506"/>
+            <point key="canvasLocation" x="-3442" y="-1506"/>
         </scene>
         <!--Estate-->
         <scene sceneID="QeU-id-C1P">
@@ -322,7 +325,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jAq-li-hY2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="121.73913043478262" y="-1097.5446428571429"/>
+            <point key="canvasLocation" x="226" y="-934"/>
         </scene>
         <!--Room-->
         <scene sceneID="SWc-VH-Z9X">
@@ -363,7 +366,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XYK-jf-s0P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-949.27536231884062" y="-642.1875"/>
+            <point key="canvasLocation" x="-923" y="-600"/>
         </scene>
         <!--Test-->
         <scene sceneID="EpE-uq-kpa">
@@ -453,7 +456,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uI2-3g-NAR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1673.913043478261" y="-642.1875"/>
+            <point key="canvasLocation" x="-1701" y="-600"/>
         </scene>
         <!--Estate-->
         <scene sceneID="ymX-Aw-jna">
@@ -491,11 +494,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xxF-FI-T9z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2652" y="-642"/>
+            <point key="canvasLocation" x="-2600" y="-600"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="SQi-fp-Bx2"/>
+        <segue reference="j9d-Rr-OQU"/>
         <segue reference="GbF-yp-P7P"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -505,9 +508,6 @@
         <image name="person.3.fill" catalog="system" width="128" height="61"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="person.fill.viewfinder" catalog="system" width="128" height="115"/>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

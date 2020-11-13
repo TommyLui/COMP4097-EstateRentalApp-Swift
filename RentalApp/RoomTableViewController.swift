@@ -70,7 +70,7 @@ class RoomTableViewController: UITableViewController {
 
     }
     */
-
+    
     /*
     // Override to support conditional rearranging of the table view.
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -97,6 +97,4 @@ class RoomTableViewController: UITableViewController {
             print("roomSelect passed: ", viewController.roomSelect)
         }
     }
-    
-
 }
