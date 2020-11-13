@@ -177,7 +177,7 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
             let selectedIndex = tableView.indexPathForSelectedRow!
             print(selectedIndex)
             
-            viewController.id = fetchedResultsController.object(at: selectedIndex).property_title
+            viewController.id = fetchedResultsController.object(at: selectedIndex).id
             
             print("id passed: ", viewController.id)
         }

@@ -30,7 +30,7 @@ class DataController {
         }
         
         persistentContainer = NSPersistentContainer(name: "RentalAppModel")
-        
+        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         persistentContainer.loadPersistentStores { (description, error) in
             if let error = error {
                 fatalError("Core Data stack could not be loaded. \(error)")

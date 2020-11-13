@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		363F0D59255D70550031355B /* TestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F0D58255D70550031355B /* TestTableViewController.swift */; };
+		36437EDE255E673300622836 /* HouseListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36437EDD255E673300622836 /* HouseListTableViewController.swift */; };
 		365E5E06255D94A800257E0E /* EstateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E5E05255D94A800257E0E /* EstateTableViewController.swift */; };
 		365E5E0B255D94B400257E0E /* RoomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E5E0A255D94B400257E0E /* RoomTableViewController.swift */; };
 		3670BBE3255BDD8400C30AEA /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */; };
@@ -45,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		363F0D58255D70550031355B /* TestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableViewController.swift; sourceTree = "<group>"; };
+		36437EDD255E673300622836 /* HouseListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseListTableViewController.swift; sourceTree = "<group>"; };
 		365E5E05255D94A800257E0E /* EstateTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstateTableViewController.swift; sourceTree = "<group>"; };
 		365E5E0A255D94B400257E0E /* RoomTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTableViewController.swift; sourceTree = "<group>"; };
 		3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				662B36D62551733D00DC481E /* SceneDelegate.swift */,
 				662B36D82551733D00DC481E /* ViewController.swift */,
 				662B36DA2551733D00DC481E /* Main.storyboard */,
+				36437EDD255E673300622836 /* HouseListTableViewController.swift */,
 				365E5E05255D94A800257E0E /* EstateTableViewController.swift */,
 				365E5E0A255D94B400257E0E /* RoomTableViewController.swift */,
 				363F0D58255D70550031355B /* TestTableViewController.swift */,
@@ -290,6 +293,7 @@
 				363F0D59255D70550031355B /* TestTableViewController.swift in Sources */,
 				3670BBE3255BDD8400C30AEA /* HomeTableViewController.swift in Sources */,
 				662B36D92551733D00DC481E /* ViewController.swift in Sources */,
+				36437EDE255E673300622836 /* HouseListTableViewController.swift in Sources */,
 				66857C60255C0621004A8473 /* RentalAppModel.xcdatamodeld in Sources */,
 				66857C74255C1227004A8473 /* DataController.swift in Sources */,
 				365E5E06255D94A800257E0E /* EstateTableViewController.swift in Sources */,

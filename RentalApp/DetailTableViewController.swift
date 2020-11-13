@@ -10,7 +10,7 @@ import CoreData
 
 class DetailTableViewController: UITableViewController {
     
-    var id: String?
+    var id: Double?
     var roomSelect: Any?
     var houseDetail: [Houses] = []
     var networkController = NetworkController()
@@ -21,21 +21,16 @@ class DetailTableViewController: UITableViewController {
         let fetchRequest = NSFetchRequest<HouseManagedObject>(entityName:"House")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
         
-//        if let id = id {
-//            fetchRequest.predicate = NSPredicate(format: "id = %@", id)
-//        }
-        
-//        if let id = id {
-//            print("id search: ", id)
-//            fetchRequest.predicate = NSPredicate(format: "property_title == %@", id)
-//        }
-        
-//      if let id = id {
-        //            print("id search: ", id)
-        //            fetchRequest.predicate = NSPredicate(format: "property_title == %@", id)
-        //        }
-        
-        
+        if let id = id {
+            print("id search: ", id)
+            fetchRequest.predicate = NSPredicate(format: "id = \(id)")
+        }
+        /*
+        if let roomSelect = roomSelect {
+            print("rooom search: ", roomSelect)
+            fetchRequest.predicate = NSPredicate(format: "property_title == %@", id)
+        }
+         */
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: viewContext!,
@@ -76,7 +71,7 @@ class DetailTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
 //        print("section", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
-        return fetchedResultsController.sections?[section].numberOfObjects ?? 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

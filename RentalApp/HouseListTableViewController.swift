@@ -1,5 +1,5 @@
 //
-//  RoomTableViewController.swift
+//  HouseListTableViewController.swift
 //  RentalApp
 //
 //  Created by tommylui on 12/11/2020.
@@ -7,10 +7,8 @@
 
 import UIKit
 
-class RoomTableViewController: UITableViewController {
+class HouseListTableViewController: UITableViewController {
 
-    var roomMenu: [String] = ["Bedrooms <= 2", "Bedrooms >=3"]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,20 +28,18 @@ class RoomTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print(roomMenu.count)
-        return roomMenu.count
+        return 0
     }
 
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RoomCell", for: indexPath)
-        
-        // cell.textLabel?.text = "Section number: \(indexPath.section), Row number: \(indexPath.row)"
-        
-        cell.textLabel?.text = roomMenu[indexPath.row]
-        //testing
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+
+        // Configure the cell...
+
         return cell
     }
+    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -80,24 +76,14 @@ class RoomTableViewController: UITableViewController {
     }
     */
 
-    
+    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        print("prepare runed")
-        
-        if let viewController = segue.destination as? DetailTableViewController{
-            let selectedIndex = tableView.indexPathForSelectedRow!
-            print(selectedIndex)
-            
-            viewController.roomSelect = selectedIndex.last
-            
-            print("roomSelect passed: ", viewController.roomSelect)
-        }
     }
-    
+    */
 
 }
