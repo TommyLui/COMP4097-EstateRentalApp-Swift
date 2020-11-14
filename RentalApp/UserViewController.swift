@@ -6,40 +6,39 @@
 //
 
 import UIKit
+import CoreData
 
 class UserViewController: UIViewController {
     var networkController = NetworkController()
+    var rental: [Houses] = []
+    var rentalIDArray: [Double] = []
+    var houses: [Houses] = []
+    var viewContext: NSManagedObjectContext?
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<HouseManagedObject> = {
+        
+        let fetchRequest = NSFetchRequest<HouseManagedObject>(entityName:"House")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
+        
+        
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: AppDelegate.dataController!.persistentContainer.viewContext,
+                                                    sectionNameKeyPath: nil, cacheName: nil)
+        
+        controller.delegate = self
+        
+        do {
+            try controller.performFetch()
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+        return controller
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let userDefaults = UserDefaults.standard
-//        let logStatFromUserDefault = userDefaults.bool(forKey: "logStat")
-//        let userPhotoFromUserDefault = userDefaults.string(forKey: "userPhoto")
-//        let userNameFromUserDefault = userDefaults.string(forKey: "userName")
-//        print("logStatFromUserDefault: ", logStatFromUserDefault)
-//        if logStatFromUserDefault == true{
-//            if let userPhoto = self.view.viewWithTag(100) as? UIImageView {
-//                networkController.fetchImage(for: userPhotoFromUserDefault!, completionHandler: { (data) in
-//                    DispatchQueue.main.async {
-//                        userPhoto.image = UIImage(data: data, scale:1)
-//                    }
-//                }) { (error) in
-//                    DispatchQueue.main.async {
-//                        userPhoto.image = UIImage(named: "hkbu_logo")
-//                    }
-//                }
-//            }
-//            if let userName = self.view.viewWithTag(200) as? UILabel {
-//                userName.text = userNameFromUserDefault
-//            }
-//            if let logButton = self.view.viewWithTag(300) as? UIButton {
-//                logButton.setTitle("Logout", for: .normal)
-//            }
-//        }else{
-//            if let logButton = self.view.viewWithTag(300) as? UIButton {
-//                logButton.setTitle("Login", for: .normal)
-//            }
-//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -81,13 +80,36 @@ class UserViewController: UIViewController {
     @IBAction func myRentalBtn(_ sender: UIButton) {
         print("myRentalBtn click")
         
+        
         networkController.fetchMyRental(completionHandler: { (rental) in
             DispatchQueue.main.async {
                 print("fetchMyRental data:", rental)
                 let userDefaults = UserDefaults.standard
                 userDefaults.set("myRental", forKey: "fromPage")
                 
+                self.rental = rental
+                self.rental.forEach { (rental) in
+                    self.rentalIDArray.append(rental.id)
+                }
+                print("rental ID list : ", self.rentalIDArray)
                 
+                if !self.rentalIDArray.isEmpty{
+                    let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
+                    print("houses in db:", numberOfObjects)
+                        
+                    for i in 0...(numberOfObjects - 1) {
+                    let indexPath:IndexPath = [0, i]
+                        
+                    let houses = self.fetchedResultsController.object(at: indexPath)
+                        for j in 0...(self.rentalIDArray.count - 1){
+                        if houses.id == self.rentalIDArray[j]{
+                            houses.isRental = true
+                        }
+                        }
+                    print(houses.id)
+                    }
+                    
+                }
             }
         }) { (error) in
             DispatchQueue.main.async {
@@ -95,8 +117,7 @@ class UserViewController: UIViewController {
             }
         }
         
-        
-        
+    
     }
     
     
@@ -123,4 +144,15 @@ class UserViewController: UIViewController {
 //            print("logStatus passed: ", viewController.logStatus)
 //        }
 //    }
+}
+
+extension UserViewController: NSFetchedResultsControllerDelegate {
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any, at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+
+//        tableView.reloadData()
+//        print("upodate user page")
+    }
 }

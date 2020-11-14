@@ -68,6 +68,7 @@ class DataController {
                                         houseManagedObject.rent = house.rent
                                         houseManagedObject.h_Property = house.h_Property
                                         houseManagedObject.occupied = house.occupied
+                                        houseManagedObject.isRental = house.isRental!
                                         print("data save")
                                     }
                                     do {

@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class HomeTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class HomeTableViewController: UITableViewController {
     
     var houses: [Houses] = []
     var viewContext: NSManagedObjectContext?
@@ -175,17 +175,6 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
         }
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChange anObject: Any, at indexPath: IndexPath?,
-                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
-        tableView.reloadData()
-        print("upodate table page")
-    }
-}
-
-//extension HomeTableViewController: NSFetchedResultsControllerDelegate {
-//
 //    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 //                    didChange anObject: Any, at indexPath: IndexPath?,
 //                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -193,4 +182,15 @@ class HomeTableViewController: UITableViewController, NSFetchedResultsController
 //        tableView.reloadData()
 //        print("upodate table page")
 //    }
-//}
+}
+
+extension HomeTableViewController: NSFetchedResultsControllerDelegate {
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any, at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+
+        tableView.reloadData()
+//        print("upodate table page")
+    }
+}

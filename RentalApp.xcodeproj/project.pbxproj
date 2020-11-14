@@ -11,7 +11,6 @@
 		36437EDE255E673300622836 /* HouseListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36437EDD255E673300622836 /* HouseListTableViewController.swift */; };
 		36437EE3255E743900622836 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36437EE2255E743900622836 /* UserViewController.swift */; };
 		36437EE8255E781800622836 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36437EE7255E781800622836 /* LoginViewController.swift */; };
-		36466819255FC4C200C785D0 /* RentalManagedObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36466817255FC4C200C785D0 /* RentalManagedObject+CoreDataClass.swift */; };
 		365E5E06255D94A800257E0E /* EstateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E5E05255D94A800257E0E /* EstateTableViewController.swift */; };
 		365E5E0B255D94B400257E0E /* RoomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E5E0A255D94B400257E0E /* RoomTableViewController.swift */; };
 		3670BBE3255BDD8400C30AEA /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */; };
@@ -52,7 +51,6 @@
 		36437EDD255E673300622836 /* HouseListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseListTableViewController.swift; sourceTree = "<group>"; };
 		36437EE2255E743900622836 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		36437EE7255E781800622836 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		36466817255FC4C200C785D0 /* RentalManagedObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RentalManagedObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		365E5E05255D94A800257E0E /* EstateTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstateTableViewController.swift; sourceTree = "<group>"; };
 		365E5E0A255D94B400257E0E /* RoomTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTableViewController.swift; sourceTree = "<group>"; };
 		3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
@@ -105,7 +103,6 @@
 		662B36C82551733D00DC481E = {
 			isa = PBXGroup;
 			children = (
-				36466817255FC4C200C785D0 /* RentalManagedObject+CoreDataClass.swift */,
 				66857C7E255C2B7E004A8473 /* HouseManagedObject+CoreDataClass.swift */,
 				66857C73255C1227004A8473 /* DataController.swift */,
 				662B36D32551733D00DC481E /* RentalApp */,
@@ -297,7 +294,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36466819255FC4C200C785D0 /* RentalManagedObject+CoreDataClass.swift in Sources */,
 				365E5E0B255D94B400257E0E /* RoomTableViewController.swift in Sources */,
 				3670BBEB255BE50000C30AEA /* NetworkController.swift in Sources */,
 				363F0D59255D70550031355B /* TestTableViewController.swift in Sources */,

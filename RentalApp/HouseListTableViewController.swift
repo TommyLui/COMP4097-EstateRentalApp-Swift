@@ -15,6 +15,7 @@ class HouseListTableViewController: UITableViewController {
     var houseDetail: [Houses] = []
     var networkController = NetworkController()
     var viewContext: NSManagedObjectContext?
+    var rentalIDArray: [Int] = []
     
     lazy var fetchedResultsController: NSFetchedResultsController<HouseManagedObject> = {
         
@@ -44,7 +45,7 @@ class HouseListTableViewController: UITableViewController {
         }
         
         if fromPage == "myRental"{
-            
+            fetchRequest.predicate = NSPredicate(format: "isRental = true")
         }
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
@@ -85,7 +86,7 @@ class HouseListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("Houses list number in db: ", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
+//        print("Houses list number in db: ", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
         return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 

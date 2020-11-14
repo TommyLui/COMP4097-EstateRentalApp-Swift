@@ -9,14 +9,13 @@
         <attribute name="h_Property" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="image_URL" optional="YES" attributeType="String"/>
+        <attribute name="isRental" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="occupied" optional="YES" attributeType="String"/>
         <attribute name="property_title" optional="YES" attributeType="String"/>
         <attribute name="rent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="updatedAt" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
-    <entity name="Rental" representedClassName="RentalManagedObject" parentEntity="House" syncable="YES" codeGenerationType="category"/>
     <elements>
-        <element name="House" positionX="-63" positionY="-18" width="128" height="223"/>
-        <element name="Rental" positionX="-63" positionY="72" width="128" height="43"/>
+        <element name="House" positionX="-63" positionY="-18" width="128" height="238"/>
     </elements>
 </model>
