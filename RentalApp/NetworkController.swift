@@ -74,6 +74,18 @@ class NetworkController {
         task.resume()
     }
     
+    func checkNetwork() -> Bool{
+            var imageUrl: String = ""
+            var result: Bool = false
+            fetchImage(for: imageUrl, completionHandler: { (data) in
+                result = true
+            }) { (error) in
+                result = false
+            }
+            return result
+        }
+
+    
     //userID: String, userPW:String,
     func fetchLogin(completionHandler: @escaping (UserInfo) -> (),
                     errorHandler: @escaping (Error?) -> ()) {

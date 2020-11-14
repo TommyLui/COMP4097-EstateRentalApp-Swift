@@ -96,7 +96,7 @@ class UserViewController: UIViewController {
                 if !self.rentalIDArray.isEmpty{
                     let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
                     print("houses in db:", numberOfObjects)
-                        
+                    
                     for i in 0...(numberOfObjects - 1) {
                         let indexPath:IndexPath = [0, i]
                         let houses = self.fetchedResultsController.object(at: indexPath)

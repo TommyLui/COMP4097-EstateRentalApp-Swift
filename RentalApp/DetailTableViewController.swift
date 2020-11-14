@@ -134,6 +134,17 @@ class DetailTableViewController: UITableViewController {
                 networkController.fetchAddRental(id: Int(id!), completionHandler: { (responseCode) in
                     DispatchQueue.main.async {
                         print("fetchAddRental responseCode:", responseCode)
+                        
+                        let indexPath:IndexPath = [0, 0]
+                        let houses = self.fetchedResultsController.object(at: indexPath)
+                        houses.isRental = true
+                        do {
+                            try self.viewContext?.save()
+                            
+                        } catch {
+                            print("Could not save managed object context. \(error)")
+                        }
+                        
                         self.performSegueToReturnBack()
                     }
                 }) { (error) in
@@ -145,7 +156,18 @@ class DetailTableViewController: UITableViewController {
                 }else if moveButtonText == "Move-out"{
                     networkController.fetchDropRental(id: Int(id!), completionHandler: { (responseCode) in
                         DispatchQueue.main.async {
-                            print("fetchAddRental responseCode:", responseCode)
+                            print("fetchDropRental responseCode:", responseCode)
+                            
+                            let indexPath:IndexPath = [0, 0]
+                            let houses = self.fetchedResultsController.object(at: indexPath)
+                            houses.isRental = false
+                            do {
+                                try self.viewContext?.save()
+                                
+                            } catch {
+                                print("Could not save managed object context. \(error)")
+                            }
+                            
                             self.performSegueToReturnBack()
                         }
                     }) { (error) in
