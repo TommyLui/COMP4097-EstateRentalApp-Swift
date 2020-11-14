@@ -106,6 +106,9 @@ class NetworkController {
                     print("error JsonDecode")
                     return
             }
+            
+            
+            
             completionHandler(userInfo)
            })
            task.resume()
@@ -150,9 +153,51 @@ class NetworkController {
     func fetchMyRental(completionHandler: @escaping ([Houses]) -> (),
                     errorHandler: @escaping (Error?) -> ()) {
 
-           let parameters = ["username": "Brittany", "password": "Hutt"]
+//           let parameters = ["username": "Brittany", "password": "Hutt"]
 
-           let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/login")!
+           let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/myRentals")!
+        
+           let session = URLSession.shared
+
+           var request = URLRequest(url: url)
+//           request.httpMethod = "POST"
+
+//           do {
+//               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+//           } catch let error {
+//               print(error.localizedDescription)
+//           }
+
+           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+           request.addValue("application/json", forHTTPHeaderField: "Accept")
+
+           let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+               guard error == nil else {
+                   return
+               }
+            
+            guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
+                    errorHandler(nil)
+                    print("error JsonDecode")
+                    return
+            }
+            completionHandler(houses)
+           })
+           task.resume()
+    }
+    
+    func fetchAddRental(id: Int, completionHandler: @escaping (Int) -> (),
+                    errorHandler: @escaping (Error?) -> ()) {
+            
+            var responseCode = 0
+        
+           let parameters = ["fk": id]
+        
+            let rentalUrl = "https://morning-plains-00409.herokuapp.com/user/rent/" + String(id)
+        
+            print(rentalUrl)
+        
+           let url = URL(string: rentalUrl)!
         
            let session = URLSession.shared
 
@@ -173,17 +218,21 @@ class NetworkController {
                    return
                }
             
-            guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
-                    errorHandler(nil)
-                    print("error JsonDecode")
-                    return
+//            guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
+//                    errorHandler(nil)
+//                    print("error JsonDecode")
+//                    return
+//            }
+            if let response = response as? HTTPURLResponse{
+//                    print("logout response code: ", response.statusCode)
+                responseCode = response.statusCode
             }
-            completionHandler(houses)
+            
+            completionHandler(responseCode)
            })
            task.resume()
     }
- }
-
+}
 
 struct Houses: Codable {
     let createdAt: Double
@@ -201,9 +250,9 @@ struct Houses: Codable {
 }
 
 struct UserInfo: Codable {
-    let createdAt: Int
-    let updatedAt: Int
-    let id: Int
+    let createdAt: Double
+    let updatedAt: Double
+    let id: Double
     let username: String
     let role: String
     let avatar: String

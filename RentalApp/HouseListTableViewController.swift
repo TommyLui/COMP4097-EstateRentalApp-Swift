@@ -21,6 +21,11 @@ class HouseListTableViewController: UITableViewController {
         let fetchRequest = NSFetchRequest<HouseManagedObject>(entityName:"House")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
         
+        let userDefaults = UserDefaults.standard
+        let fromPage = userDefaults.string(forKey: "fromPage")
+        print("fromPage: ", fromPage)
+        
+        if fromPage == "roomPage"{
         if let roomSelect = roomSelect {
             if roomSelect as! Int == 0 {
                 fetchRequest.predicate = NSPredicate(format: "bedrooms <= 2")
@@ -30,11 +35,17 @@ class HouseListTableViewController: UITableViewController {
             }
             print("rooom search: ", roomSelect)
         }
+        }
         
+        if fromPage == "estatePage"{
         if let estateSelect = estateSelect {
             fetchRequest.predicate = NSPredicate(format: "estate = %@", estateSelect)
         }
+        }
         
+        if fromPage == "myRental"{
+            
+        }
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: viewContext!,

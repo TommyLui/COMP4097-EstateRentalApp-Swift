@@ -120,6 +120,9 @@ class EstateTableViewController: UITableViewController {
             
             viewController.estateSelect = fetchedResultsController.object(at: selectedIndex).estate
             
+            let userDefaults = UserDefaults.standard
+            userDefaults.set("estatePage", forKey: "fromPage")
+            
             print("estateSelect passed: ", viewController.estateSelect!)
         }
     }

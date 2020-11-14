@@ -115,6 +115,22 @@ class DetailTableViewController: UITableViewController {
         
         return cell
     }
+    
+    @IBAction func moveRental(_ sender: UIButton) {
+        print("moveRental click")
+        networkController.fetchAddRental(id: Int(id!), completionHandler: { (responseCode) in
+            DispatchQueue.main.async {
+                print("fetchAddRental responseCode:", responseCode)
+            }
+        }) { (error) in
+            DispatchQueue.main.async {
+               print("error fetchMyRental")
+            }
+        }
+        
+        
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.

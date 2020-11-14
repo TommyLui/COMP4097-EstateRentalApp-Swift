@@ -94,6 +94,9 @@ class RoomTableViewController: UITableViewController {
             
             viewController.roomSelect = selectedIndex.last
             
+            let userDefaults = UserDefaults.standard
+            userDefaults.set("roomPage", forKey: "fromPage")
+            
             print("roomSelect passed: ", viewController.roomSelect)
         }
     }

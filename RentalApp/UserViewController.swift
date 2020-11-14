@@ -81,6 +81,19 @@ class UserViewController: UIViewController {
     @IBAction func myRentalBtn(_ sender: UIButton) {
         print("myRentalBtn click")
         
+        networkController.fetchMyRental(completionHandler: { (rental) in
+            DispatchQueue.main.async {
+                print("fetchMyRental data:", rental)
+                let userDefaults = UserDefaults.standard
+                userDefaults.set("myRental", forKey: "fromPage")
+                
+                
+            }
+        }) { (error) in
+            DispatchQueue.main.async {
+               print("error fetchMyRental")
+            }
+        }
         
         
         
