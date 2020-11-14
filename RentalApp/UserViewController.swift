@@ -102,13 +102,17 @@ class UserViewController: UIViewController {
                         
                     let houses = self.fetchedResultsController.object(at: indexPath)
                         for j in 0...(self.rentalIDArray.count - 1){
-                        if houses.id == self.rentalIDArray[j]{
-                            houses.isRental = true
+                            if houses.id == self.rentalIDArray[j]{
+                                houses.isRental = true
+                            }
                         }
-                        }
-                    print(houses.id)
                     }
-                    
+                    do {
+                        try self.viewContext?.save()
+                        
+                    } catch {
+                        print("Could not save managed object context. \(error)")
+                    }
                 }
             }
         }) { (error) in
@@ -116,8 +120,6 @@ class UserViewController: UIViewController {
                print("error fetchMyRental")
             }
         }
-        
-    
     }
     
     

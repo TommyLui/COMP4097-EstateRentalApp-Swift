@@ -113,6 +113,14 @@ class DetailTableViewController: UITableViewController {
             cellLabel.text = "Rent: " + rent + ", Tenants: " + expected_tenants + ", Area: " + gross_area
         }
         
+        if let cellLabel = cell.viewWithTag(500) as? UIButton {
+            if fetchedResultsController.object(at: indexPath).isRental == false{
+                cellLabel.setTitle("Move-in", for: .normal)
+            }else if fetchedResultsController.object(at: indexPath).isRental == true{
+                cellLabel.setTitle("Move-out", for: .normal)
+            }
+        }
+        
         return cell
     }
     
