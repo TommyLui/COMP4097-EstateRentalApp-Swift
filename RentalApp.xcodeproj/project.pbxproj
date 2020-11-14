@@ -11,6 +11,7 @@
 		36437EDE255E673300622836 /* HouseListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36437EDD255E673300622836 /* HouseListTableViewController.swift */; };
 		36437EE3255E743900622836 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36437EE2255E743900622836 /* UserViewController.swift */; };
 		36437EE8255E781800622836 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36437EE7255E781800622836 /* LoginViewController.swift */; };
+		36441A6A25600BC90034707F /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36441A6925600BC90034707F /* MapViewController.swift */; };
 		365E5E06255D94A800257E0E /* EstateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E5E05255D94A800257E0E /* EstateTableViewController.swift */; };
 		365E5E0B255D94B400257E0E /* RoomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E5E0A255D94B400257E0E /* RoomTableViewController.swift */; };
 		3670BBE3255BDD8400C30AEA /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */; };
@@ -51,6 +52,7 @@
 		36437EDD255E673300622836 /* HouseListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseListTableViewController.swift; sourceTree = "<group>"; };
 		36437EE2255E743900622836 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		36437EE7255E781800622836 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		36441A6925600BC90034707F /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		365E5E05255D94A800257E0E /* EstateTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstateTableViewController.swift; sourceTree = "<group>"; };
 		365E5E0A255D94B400257E0E /* RoomTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTableViewController.swift; sourceTree = "<group>"; };
 		3670BBE2255BDD8400C30AEA /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				662B36D62551733D00DC481E /* SceneDelegate.swift */,
 				662B36D82551733D00DC481E /* ViewController.swift */,
 				662B36DA2551733D00DC481E /* Main.storyboard */,
+				36441A6925600BC90034707F /* MapViewController.swift */,
 				36437EE7255E781800622836 /* LoginViewController.swift */,
 				36437EE2255E743900622836 /* UserViewController.swift */,
 				36437EDD255E673300622836 /* HouseListTableViewController.swift */,
@@ -309,6 +312,7 @@
 				66857C6F255C0B03004A8473 /* DetailTableViewController.swift in Sources */,
 				662B36D52551733D00DC481E /* AppDelegate.swift in Sources */,
 				662B36D72551733D00DC481E /* SceneDelegate.swift in Sources */,
+				36441A6A25600BC90034707F /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
