@@ -20,7 +20,7 @@ class NetworkController {
                 return
             }
             
-            print("fetch house data: ", data)
+//            print("fetch house data: ", data)
             
             guard let response = response as? HTTPURLResponse,
                 response.statusCode < 300 else {
@@ -77,7 +77,9 @@ class NetworkController {
     //userID: String, userPW:String,
     func fetchLogin(completionHandler: @escaping (UserInfo) -> (),
                     errorHandler: @escaping (Error?) -> ()) {
-
+        
+            print("fetchLogin called")
+        
            let parameters = ["username": "Brittany", "password": "Hutt"]
 
            let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/login")!
@@ -116,6 +118,9 @@ class NetworkController {
     
     func fetchLogout(completionHandler: @escaping (Int) -> (),
                     errorHandler: @escaping (Error?) -> ()) {
+        
+        print("fetchLogout called")
+        
             var responseCode:Int = 0
 
            let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/logout")!
@@ -152,7 +157,7 @@ class NetworkController {
     
     func fetchMyRental(completionHandler: @escaping ([Houses]) -> (),
                     errorHandler: @escaping (Error?) -> ()) {
-
+            print("fetchMyRental called")
 //           let parameters = ["username": "Brittany", "password": "Hutt"]
 
            let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/myRentals")!
@@ -188,7 +193,8 @@ class NetworkController {
     
     func fetchAddRental(id: Int, completionHandler: @escaping (Int) -> (),
                     errorHandler: @escaping (Error?) -> ()) {
-            
+        print("fetchAddRental called")
+        
             var responseCode = 0
         
            let parameters = ["fk": id]
@@ -203,6 +209,54 @@ class NetworkController {
 
            var request = URLRequest(url: url)
            request.httpMethod = "POST"
+
+           do {
+               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+           } catch let error {
+               print(error.localizedDescription)
+           }
+
+           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+           request.addValue("application/json", forHTTPHeaderField: "Accept")
+
+           let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+               guard error == nil else {
+                   return
+               }
+            
+//            guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
+//                    errorHandler(nil)
+//                    print("error JsonDecode")
+//                    return
+//            }
+            if let response = response as? HTTPURLResponse{
+//                    print("logout response code: ", response.statusCode)
+                responseCode = response.statusCode
+            }
+            
+            completionHandler(responseCode)
+           })
+           task.resume()
+    }
+    
+    func fetchDropRental(id: Int, completionHandler: @escaping (Int) -> (),
+                    errorHandler: @escaping (Error?) -> ()) {
+            print("fetchDropRental called")
+        
+            var responseCode = 0
+        
+           let parameters = ["fk": id]
+        
+            let rentalUrl = "https://morning-plains-00409.herokuapp.com/user/rent/" + String(id)
+        
+            print(rentalUrl)
+        
+           let url = URL(string: rentalUrl)!
+        
+           let session = URLSession.shared
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "DELETE"
 
            do {
                request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)

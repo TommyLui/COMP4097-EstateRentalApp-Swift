@@ -98,8 +98,13 @@ class UserViewController: UIViewController {
                     print("houses in db:", numberOfObjects)
                         
                     for i in 0...(numberOfObjects - 1) {
-                    let indexPath:IndexPath = [0, i]
+                        let indexPath:IndexPath = [0, i]
+                        let houses = self.fetchedResultsController.object(at: indexPath)
+                        houses.isRental = false
+                    }
                         
+                    for i in 0...(numberOfObjects - 1) {
+                    let indexPath:IndexPath = [0, i]
                     let houses = self.fetchedResultsController.object(at: indexPath)
                         for j in 0...(self.rentalIDArray.count - 1){
                             if houses.id == self.rentalIDArray[j]{

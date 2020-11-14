@@ -126,13 +126,35 @@ class DetailTableViewController: UITableViewController {
     
     @IBAction func moveRental(_ sender: UIButton) {
         print("moveRental click")
-        networkController.fetchAddRental(id: Int(id!), completionHandler: { (responseCode) in
-            DispatchQueue.main.async {
-                print("fetchAddRental responseCode:", responseCode)
-            }
-        }) { (error) in
-            DispatchQueue.main.async {
-               print("error fetchMyRental")
+        
+        if let moveButton = self.view.viewWithTag(500) as? UIButton {
+            if let moveButtonText = moveButton.titleLabel?.text{
+            print("button text: ", moveButtonText)
+                if moveButtonText == "Move-in" {
+                networkController.fetchAddRental(id: Int(id!), completionHandler: { (responseCode) in
+                    DispatchQueue.main.async {
+                        print("fetchAddRental responseCode:", responseCode)
+                        self.performSegueToReturnBack()
+                    }
+                }) { (error) in
+                    DispatchQueue.main.async {
+                       print("error fetchMyRental")
+                        self.performSegueToReturnBack()
+                    }
+                }
+                }else if moveButtonText == "Move-out"{
+                    networkController.fetchDropRental(id: Int(id!), completionHandler: { (responseCode) in
+                        DispatchQueue.main.async {
+                            print("fetchAddRental responseCode:", responseCode)
+                            self.performSegueToReturnBack()
+                        }
+                    }) { (error) in
+                        DispatchQueue.main.async {
+                           print("error fetchMyRental")
+                            self.performSegueToReturnBack()
+                        }
+                    }
+                }
             }
         }
         
