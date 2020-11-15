@@ -88,7 +88,6 @@ class UserViewController: UIViewController {
             DispatchQueue.main.async {
                 print("fetchMyRental data:", rental)
                 
-                
                 self.rental = rental
                 self.rentalIDArray = []
                 self.rental.forEach { (rental) in
@@ -100,27 +99,29 @@ class UserViewController: UIViewController {
                     let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
                     print("houses in db:", numberOfObjects)
                     
-                    for i in 0...(numberOfObjects - 1) {
-                        let indexPath:IndexPath = [0, i]
-                        let houses = self.fetchedResultsController.object(at: indexPath)
-                        houses.isRental = false
-                    }
+                    if numberOfObjects >= 1{
+                        for i in 0...(numberOfObjects - 1) {
+                            let indexPath:IndexPath = [0, i]
+                            let houses = self.fetchedResultsController.object(at: indexPath)
+                            houses.isRental = false
+                        }
                         
-                    for i in 0...(numberOfObjects - 1) {
-                    let indexPath:IndexPath = [0, i]
-                    let houses = self.fetchedResultsController.object(at: indexPath)
-                        for j in 0...(self.rentalIDArray.count - 1){
-                            if houses.id == self.rentalIDArray[j]{
-                                houses.isRental = true
-                                print(houses.id, "isRental = true")
+                        for i in 0...(numberOfObjects - 1) {
+                            let indexPath:IndexPath = [0, i]
+                            let houses = self.fetchedResultsController.object(at: indexPath)
+                            for j in 0...(self.rentalIDArray.count - 1){
+                                if houses.id == self.rentalIDArray[j]{
+                                    houses.isRental = true
+                                    print(houses.id, "isRental = true")
+                                }
                             }
                         }
-                    }
-                    do {
-                        try self.viewContext?.save()
-                        print("local rental data correct")
-                    } catch {
-                        print("Could not save managed object context. \(error)")
+                        do {
+                            try self.viewContext?.save()
+                            print("local rental data correct")
+                        } catch {
+                            print("Could not save managed object context. \(error)")
+                        }
                     }
                 }
                 
