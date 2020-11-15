@@ -58,7 +58,7 @@ class UserViewController: UIViewController {
                     }
                 }) { (error) in
                     DispatchQueue.main.async {
-                        userPhoto.image = UIImage(named: "hkbu_logo")
+//                        userPhoto.image = UIImage(named: "hkbu_logo")
                     }
                 }
             }

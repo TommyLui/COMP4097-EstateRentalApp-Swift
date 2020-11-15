@@ -9,7 +9,7 @@ import Foundation
 
 class NetworkController {
     func fetchHouses(completionHandler: @escaping ([Houses]) -> (),
-                        errorHandler: @escaping (Error?) -> ()) {
+                     errorHandler: @escaping (Error?) -> ()) {
         
         let url = URL(string: "https://morning-plains-00409.herokuapp.com/property/json")!
         
@@ -20,21 +20,21 @@ class NetworkController {
                 return
             }
             
-//            print("fetch house data: ", data)
+            //            print("fetch house data: ", data)
             
             guard let response = response as? HTTPURLResponse,
-                response.statusCode < 300 else {
-                    // Client error encountered
-                    errorHandler(nil)
-                    print("error response")
-                    return
+                  response.statusCode < 300 else {
+                // Client error encountered
+                errorHandler(nil)
+                print("error response")
+                return
             }
             
             guard let data = data, let houses =
-                try? JSONDecoder().decode([Houses].self, from: data) else {
-                    errorHandler(nil)
-                    print("error JsonDecode")
-                    return
+                    try? JSONDecoder().decode([Houses].self, from: data) else {
+                errorHandler(nil)
+                print("error JsonDecode")
+                return
             }
             
             // Call our completion handler with our news
@@ -57,10 +57,10 @@ class NetworkController {
             }
             
             guard let response = response as? HTTPURLResponse,
-                response.statusCode < 300 else {
-                    // Client error encountered
-                    errorHandler(nil)
-                    return
+                  response.statusCode < 300 else {
+                // Client error encountered
+                errorHandler(nil)
+                return
             }
             
             guard let data = data else {
@@ -74,235 +74,241 @@ class NetworkController {
         task.resume()
     }
     
-    func checkNetwork() -> Bool{
-            var imageUrl: String = ""
-            var result: Bool = false
-            fetchImage(for: imageUrl, completionHandler: { (data) in
-                result = true
-            }) { (error) in
-                result = false
-            }
-            return result
-        }
-
+//    func checkNetwork() -> Bool{
+//            let imageUrl: String = "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg"
+//            var result: Bool = false
+//            fetchImage(for: imageUrl, completionHandler: { (data) in
+//                DispatchQueue.main.async {
+//                    result = true
+//                }
+//            }) { (error) in
+//                DispatchQueue.main.async {
+//                    result = false
+//                }
+//            }
+//
+//
+//            return true
+//     }
+    
     
     //userID: String, userPW:String,
     func fetchLogin(completionHandler: @escaping (UserInfo) -> (),
                     errorHandler: @escaping (Error?) -> ()) {
         
-            print("fetchLogin called")
+        print("fetchLogin called")
         
-           let parameters = ["username": "Brittany", "password": "Hutt"]
-
-           let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/login")!
-
-           let session = URLSession.shared
-
-           var request = URLRequest(url: url)
-           request.httpMethod = "POST"
-
-           do {
-               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-           } catch let error {
-               print(error.localizedDescription)
-           }
-
-           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-           request.addValue("application/json", forHTTPHeaderField: "Accept")
-
-           let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-               guard error == nil else {
-                   return
-               }
+        let parameters = ["username": "Brittany", "password": "Hutt"]
+        
+        let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/login")!
+        
+        let session = URLSession.shared
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+            guard error == nil else {
+                return
+            }
             
             guard let data = data,let userInfo = try? JSONDecoder().decode(UserInfo.self, from: data) else {
-                    errorHandler(nil)
-                    print("error JsonDecode")
-                    return
+                errorHandler(nil)
+                print("error JsonDecode")
+                return
             }
             
             
             
             completionHandler(userInfo)
-           })
-           task.resume()
+        })
+        task.resume()
     }
     
     func fetchLogout(completionHandler: @escaping (Int) -> (),
-                    errorHandler: @escaping (Error?) -> ()) {
+                     errorHandler: @escaping (Error?) -> ()) {
         
         print("fetchLogout called")
         
-            var responseCode:Int = 0
-
-           let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/logout")!
-
-           let session = URLSession.shared
-
-           var request = URLRequest(url: url)
-           request.httpMethod = "POST"
-
-           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-           request.addValue("application/json", forHTTPHeaderField: "Accept")
-
-           let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-               guard error == nil else {
-                   return
-               }
+        var responseCode:Int = 0
+        
+        let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/logout")!
+        
+        let session = URLSession.shared
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+            guard error == nil else {
+                return
+            }
             
             if let response = response as? HTTPURLResponse{
-//                    print("logout response code: ", response.statusCode)
+                //                    print("logout response code: ", response.statusCode)
                 responseCode = response.statusCode
             }
             
             guard let response2 = response as? HTTPURLResponse,
-                response2.statusCode < 300 else {
-                    // Client error encountered
-                    errorHandler(nil)
-                    return
+                  response2.statusCode < 300 else {
+                // Client error encountered
+                errorHandler(nil)
+                return
             }
             
             completionHandler(responseCode)
-           })
-           task.resume()
+        })
+        task.resume()
     }
     
     func fetchMyRental(completionHandler: @escaping ([Houses]) -> (),
-                    errorHandler: @escaping (Error?) -> ()) {
-            print("fetchMyRental called")
-//           let parameters = ["username": "Brittany", "password": "Hutt"]
-
-           let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/myRentals")!
+                       errorHandler: @escaping (Error?) -> ()) {
+        print("fetchMyRental called")
+        //           let parameters = ["username": "Brittany", "password": "Hutt"]
         
-           let session = URLSession.shared
-
-           var request = URLRequest(url: url)
-//           request.httpMethod = "POST"
-
-//           do {
-//               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-//           } catch let error {
-//               print(error.localizedDescription)
-//           }
-
-           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-           request.addValue("application/json", forHTTPHeaderField: "Accept")
-
-           let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-               guard error == nil else {
-                   return
-               }
+        let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/myRentals")!
+        
+        let session = URLSession.shared
+        
+        var request = URLRequest(url: url)
+        //           request.httpMethod = "POST"
+        
+        //           do {
+        //               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        //           } catch let error {
+        //               print(error.localizedDescription)
+        //           }
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+            guard error == nil else {
+                return
+            }
             
             guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
-                    errorHandler(nil)
-                    print("error JsonDecode")
-                    return
+                errorHandler(nil)
+                print("error JsonDecode")
+                return
             }
             completionHandler(houses)
-           })
-           task.resume()
+        })
+        task.resume()
     }
     
     func fetchAddRental(id: Int, completionHandler: @escaping (Int) -> (),
-                    errorHandler: @escaping (Error?) -> ()) {
+                        errorHandler: @escaping (Error?) -> ()) {
         print("fetchAddRental called")
         
-            var responseCode = 0
+        var responseCode = 0
         
-           let parameters = ["fk": id]
+        let parameters = ["fk": id]
         
-            let rentalUrl = "https://morning-plains-00409.herokuapp.com/user/rent/" + String(id)
+        let rentalUrl = "https://morning-plains-00409.herokuapp.com/user/rent/" + String(id)
         
-            print(rentalUrl)
+        print(rentalUrl)
         
-           let url = URL(string: rentalUrl)!
+        let url = URL(string: rentalUrl)!
         
-           let session = URLSession.shared
-
-           var request = URLRequest(url: url)
-           request.httpMethod = "POST"
-
-           do {
-               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-           } catch let error {
-               print(error.localizedDescription)
-           }
-
-           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-           request.addValue("application/json", forHTTPHeaderField: "Accept")
-
-           let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-               guard error == nil else {
-                   return
-               }
+        let session = URLSession.shared
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+            guard error == nil else {
+                return
+            }
             
-//            guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
-//                    errorHandler(nil)
-//                    print("error JsonDecode")
-//                    return
-//            }
+            //            guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
+            //                    errorHandler(nil)
+            //                    print("error JsonDecode")
+            //                    return
+            //            }
             if let response = response as? HTTPURLResponse{
-//                    print("logout response code: ", response.statusCode)
+                //                    print("logout response code: ", response.statusCode)
                 responseCode = response.statusCode
             }
             
             completionHandler(responseCode)
-           })
-           task.resume()
+        })
+        task.resume()
     }
     
     func fetchDropRental(id: Int, completionHandler: @escaping (Int) -> (),
-                    errorHandler: @escaping (Error?) -> ()) {
-            print("fetchDropRental called")
+                         errorHandler: @escaping (Error?) -> ()) {
+        print("fetchDropRental called")
         
-            var responseCode = 0
+        var responseCode = 0
         
-           let parameters = ["fk": id]
+        let parameters = ["fk": id]
         
-            let rentalUrl = "https://morning-plains-00409.herokuapp.com/user/rent/" + String(id)
+        let rentalUrl = "https://morning-plains-00409.herokuapp.com/user/rent/" + String(id)
         
-            print(rentalUrl)
+        print(rentalUrl)
         
-           let url = URL(string: rentalUrl)!
+        let url = URL(string: rentalUrl)!
         
-           let session = URLSession.shared
-
-           var request = URLRequest(url: url)
-           request.httpMethod = "DELETE"
-
-           do {
-               request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-           } catch let error {
-               print(error.localizedDescription)
-           }
-
-           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-           request.addValue("application/json", forHTTPHeaderField: "Accept")
-
-           let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-               guard error == nil else {
-                   return
-               }
+        let session = URLSession.shared
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+            guard error == nil else {
+                return
+            }
             
-//            guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
-//                    errorHandler(nil)
-//                    print("error JsonDecode")
-//                    return
-//            }
+            //            guard let data = data,let houses = try? JSONDecoder().decode([Houses].self, from: data) else {
+            //                    errorHandler(nil)
+            //                    print("error JsonDecode")
+            //                    return
+            //            }
             if let response = response as? HTTPURLResponse{
-//                    print("logout response code: ", response.statusCode)
+                //                    print("logout response code: ", response.statusCode)
                 responseCode = response.statusCode
             }
             
             completionHandler(responseCode)
-           })
-           task.resume()
+        })
+        task.resume()
     }
     
     func fetchLocation(placeToSearch: String, completionHandler: @escaping ([LocationInfo]) -> (),
-                    errorHandler: @escaping (Error?) -> ()) {
+                       errorHandler: @escaping (Error?) -> ()) {
         
-            print("fetchLocation called")
+        print("fetchLocation called")
         
         let apiUrl = "https://api.locationiq.com/v1/autocomplete.php?key=pk.8b6c10eb906a649ba2211f6bdb7a29d3&q=\(placeToSearch)&limit=1&format=json"
         print("map api url: ", apiUrl)
@@ -318,18 +324,18 @@ class NetworkController {
             print("fetch location data: ", data)
             
             guard let response = response as? HTTPURLResponse,
-                response.statusCode < 300 else {
-                    // Client error encountered
-                    errorHandler(nil)
-                    print("error response")
-                    return
+                  response.statusCode < 300 else {
+                // Client error encountered
+                errorHandler(nil)
+                print("error response")
+                return
             }
             
             guard let data = data, let locationInfo =
-                try? JSONDecoder().decode([LocationInfo].self, from: data) else {
-                    errorHandler(nil)
-                    print("error JsonDecode")
-                    return
+                    try? JSONDecoder().decode([LocationInfo].self, from: data) else {
+                errorHandler(nil)
+                print("error JsonDecode")
+                return
             }
             
             // Call our completion handler with our news
