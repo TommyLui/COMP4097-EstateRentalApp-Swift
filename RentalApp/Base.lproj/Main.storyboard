@@ -174,7 +174,7 @@
         <!--Map-->
         <scene sceneID="rP6-Tl-Y7F">
             <objects>
-                <viewController title="Map" id="eZT-45-IXd" sceneMemberID="viewController">
+                <viewController title="Map" id="eZT-45-IXd" customClass="MapViewController" customModule="RentalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="H0s-pu-byF">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -188,6 +188,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="x94-NA-ddD"/>
+                    <connections>
+                        <outlet property="mapView" destination="jrE-xG-pBk" id="rff-rq-LMc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pp8-PP-dM5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

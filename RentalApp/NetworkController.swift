@@ -298,6 +298,46 @@ class NetworkController {
            })
            task.resume()
     }
+    
+    func fetchLocation(placeToSearch: String, completionHandler: @escaping ([LocationInfo]) -> (),
+                    errorHandler: @escaping (Error?) -> ()) {
+        
+            print("fetchLocation called")
+        
+        let apiUrl = "https://api.locationiq.com/v1/autocomplete.php?key=pk.8b6c10eb906a649ba2211f6bdb7a29d3&q=\(placeToSearch)&limit=1&format=json"
+        print("map api url: ", apiUrl)
+        let url = URL(string: apiUrl)!
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("Server error encountered")
+                errorHandler(error)
+                return
+            }
+            
+            print("fetch location data: ", data)
+            
+            guard let response = response as? HTTPURLResponse,
+                response.statusCode < 300 else {
+                    // Client error encountered
+                    errorHandler(nil)
+                    print("error response")
+                    return
+            }
+            
+            guard let data = data, let locationInfo =
+                try? JSONDecoder().decode([LocationInfo].self, from: data) else {
+                    errorHandler(nil)
+                    print("error JsonDecode")
+                    return
+            }
+            
+            // Call our completion handler with our news
+            completionHandler(locationInfo)
+        }
+        
+        task.resume()
+    }
 }
 
 struct Houses: Codable {
@@ -313,7 +353,7 @@ struct Houses: Codable {
     let rent: Double
     let h_Property: String
     let occupied: String?
-    var isRental:Bool? = false
+    var isRental:Bool?
 }
 
 struct UserInfo: Codable {
@@ -323,4 +363,9 @@ struct UserInfo: Codable {
     let username: String
     let role: String
     let avatar: String
+}
+
+struct LocationInfo: Codable {
+    let lat: String
+    let lon: String
 }

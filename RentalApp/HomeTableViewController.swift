@@ -59,26 +59,26 @@ class HomeTableViewController: UITableViewController {
                     print("fetchMyRental data:", rental)
                     let userDefaults = UserDefaults.standard
                     userDefaults.set("myRental", forKey: "fromPage")
-                    
+
                     self.rental = rental
                     self.rental.forEach { (rental) in
                         self.rentalIDArray.append(rental.id)
                     }
                     print("rental ID list : ", self.rentalIDArray)
-                    
+
                     if !self.rentalIDArray.isEmpty{
                         let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
                         print("houses in db:", numberOfObjects)
-                        
+
                         for i in 0...(numberOfObjects - 1) {
                             let indexPath:IndexPath = [0, i]
                             let houses = self.fetchedResultsController.object(at: indexPath)
                             houses.isRental = false
                         }
-                            
+
                         for i in 0...(numberOfObjects - 1) {
                         let indexPath:IndexPath = [0, i]
-                            
+
                         let houses = self.fetchedResultsController.object(at: indexPath)
                             for j in 0...(self.rentalIDArray.count - 1){
                                 if houses.id == self.rentalIDArray[j]{
@@ -88,7 +88,7 @@ class HomeTableViewController: UITableViewController {
                         }
                         do {
                             try self.viewContext?.save()
-                            
+
                         } catch {
                             print("Could not save managed object context. \(error)")
                         }
@@ -123,7 +123,7 @@ class HomeTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("Houses data number in db: ", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
+//        print("Houses data number in db: ", fetchedResultsController.sections?[section].numberOfObjects ?? 0)
         return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 
