@@ -113,7 +113,7 @@ class DetailTableViewController: UITableViewController {
         }
         
         if let cellLabel = cell.viewWithTag(500) as? UIButton {
-//        if let cellLabel = self.view.viewWithTag(500) as? UIButton {
+            //        if let cellLabel = self.view.viewWithTag(500) as? UIButton {
             if fetchedResultsController.object(at: [0, 0]).isRental == false{
                 cellLabel.setTitle("Move-in", for: .normal)
             }else if fetchedResultsController.object(at: [0, 0]).isRental == true{
@@ -129,13 +129,14 @@ class DetailTableViewController: UITableViewController {
         let userDefaults = UserDefaults.standard
         let logStatFromUserDefault = userDefaults.bool(forKey: "logStat")
         
+        networkController.fetchImage(for: "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg", completionHandler: { (networkTest) in
+            DispatchQueue.main.async {
+        
         if logStatFromUserDefault == true{
-            
             let alert = UIAlertController(
                 title: "Are you sure?!",
                 message: "",
                 preferredStyle: .alert)
-            
             alert.addAction(
                 UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                     print("Move-in alert OK button pressed!")
@@ -253,6 +254,25 @@ class DetailTableViewController: UITableViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         }
+            }
+        }) { (error) in
+            DispatchQueue.main.async {
+                print("Network fail to move")
+                
+                let alert = UIAlertController(
+                    title: "Fail to move!",
+                    message: "Network fail!",
+                    preferredStyle: .alert)
+                alert.addAction(
+                    UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                        print("move alert OK button pressed!")
+                    }
+                    )
+                )
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
     }
     
     

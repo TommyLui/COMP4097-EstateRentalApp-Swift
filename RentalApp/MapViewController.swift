@@ -59,47 +59,69 @@ class MapViewController: UIViewController {
         let mapLonFromDb = house.mapLon
         
         if mapLatFromDb == 0 && mapLonFromDb == 0{
-            DispatchQueue.main.async {
-                let alert = UIAlertController(
-                    title: "Load map data from network",
-                    message: "",
-                    preferredStyle: .alert)
-                
-                alert.addAction(
-                    UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                        print("Move-in alert OK button pressed!")
-                        DispatchQueue.main.async {
-                            let placeToSearchWithSpace = "Hong%20Kong, " + house.estate!
-                            let placeToSearch = placeToSearchWithSpace.replacingOccurrences(of: " ", with: "%20")
-                            self.networkController.fetchLocation(placeToSearch: placeToSearch, completionHandler: { (locationInfo) in
+            
+            networkController.fetchImage(for: "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg", completionHandler: { (networkTest) in
+                DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(
+                            title: "Load map data from network",
+                            message: "",
+                            preferredStyle: .alert)
+                        
+                        alert.addAction(
+                            UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                print("Move-in alert OK button pressed!")
                                 DispatchQueue.main.async {
-                                    print("fetchLocation success")
-                                    self.locationInfo = locationInfo
-                                    print(self.locationInfo![0].lat, self.locationInfo![0].lon)
-                                    let campusLocation = CLLocation(latitude: Double(self.locationInfo![0].lat)!, longitude: Double(self.locationInfo![0].lon)!)
-                                    self.mapView.setCenterLocation(campusLocation)
-                                    self.mapView.addAnnotation(Estate(title: house.property_title,
-                                                                      estateName: house.estate!, coordinate: CLLocationCoordinate2D(latitude: Double(self.locationInfo![0].lat)!, longitude: Double(self.locationInfo![0].lon)!)))
-                                    let indexPath:IndexPath = [0, 0]
-                                    let houses = self.fetchedResultsController.object(at: indexPath)
-                                    houses.mapLat = Double(self.locationInfo![0].lat)!
-                                    houses.mapLon = Double(self.locationInfo![0].lon)!
-                                    do {
-                                        try self.viewContext?.save()
-                                        print("map data save in local db")
-                                    } catch {
-                                        print("Could not save managed object context. \(error)")
-                                    }
-                                }
-                            }) { (error) in
-                                DispatchQueue.main.async {
-                                    print("fetchLocation fail")
-                                }
-                            }}
-                    })
-                )
-                self.present(alert, animated: true, completion: nil)
+                                    let placeToSearchWithSpace = "Hong%20Kong, " + house.estate!
+                                    let placeToSearch = placeToSearchWithSpace.replacingOccurrences(of: " ", with: "%20")
+                                    self.networkController.fetchLocation(placeToSearch: placeToSearch, completionHandler: { (locationInfo) in
+                                        DispatchQueue.main.async {
+                                            print("fetchLocation success")
+                                            self.locationInfo = locationInfo
+                                            print(self.locationInfo![0].lat, self.locationInfo![0].lon)
+                                            let campusLocation = CLLocation(latitude: Double(self.locationInfo![0].lat)!, longitude: Double(self.locationInfo![0].lon)!)
+                                            self.mapView.setCenterLocation(campusLocation)
+                                            self.mapView.addAnnotation(Estate(title: house.property_title,
+                                                                              estateName: house.estate!, coordinate: CLLocationCoordinate2D(latitude: Double(self.locationInfo![0].lat)!, longitude: Double(self.locationInfo![0].lon)!)))
+                                            let indexPath:IndexPath = [0, 0]
+                                            let houses = self.fetchedResultsController.object(at: indexPath)
+                                            houses.mapLat = Double(self.locationInfo![0].lat)!
+                                            houses.mapLon = Double(self.locationInfo![0].lon)!
+                                            do {
+                                                try self.viewContext?.save()
+                                                print("map data save in local db")
+                                            } catch {
+                                                print("Could not save managed object context. \(error)")
+                                            }
+                                        }
+                                    }) { (error) in
+                                        DispatchQueue.main.async {
+                                            print("fetchLocation fail")
+                                        }
+                                    }}
+                            })
+                        )
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }) { (error) in
+                DispatchQueue.main.async {
+                    print("Network fail to load map")
+                    
+                    let alert = UIAlertController(
+                        title: "Fail to load map!",
+                        message: "Network fail & no local data!",
+                        preferredStyle: .alert)
+                    alert.addAction(
+                        UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                            print("Logout alert OK button pressed!")
+                        }
+                        )
+                    )
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
+            
             
         }else{
             DispatchQueue.main.async {

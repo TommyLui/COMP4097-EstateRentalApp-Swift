@@ -181,8 +181,10 @@ class LoginViewController: UIViewController {
         
         }else{
             
+            ////check network success start
             networkController.fetchImage(for: "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg", completionHandler: { (networkTest) in
                 DispatchQueue.main.async {
+            ////check network success end
             
                     self.networkController.fetchLogout(completionHandler: { (responseCode) in
                 DispatchQueue.main.async {
@@ -197,6 +199,7 @@ class LoginViewController: UIViewController {
                 }
             }
             
+                    ////network error start
                     
                 }
             }) { (error) in
@@ -216,6 +219,8 @@ class LoginViewController: UIViewController {
                     self.present(alert, animated: true, completion: nil)
                 }
             }
+            
+            //// network error end
             
             
         }
