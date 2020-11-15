@@ -82,6 +82,9 @@ class DetailTableViewController: UITableViewController {
         let expected_tenants = String(fetchedResultsController.object(at: indexPath).expected_tenants)
         let gross_area = String(fetchedResultsController.object(at: indexPath).gross_area)
         
+        let userDefaults = UserDefaults.standard
+        let logStatFromUserDefault = userDefaults.bool(forKey: "logStat")
+        
         var url:String? = fetchedResultsController.object(at: indexPath).image_URL
         if url != nil{
             if  !url!.contains("https"){
@@ -114,9 +117,9 @@ class DetailTableViewController: UITableViewController {
         }
         
         if let cellLabel = cell.viewWithTag(500) as? UIButton {
-            if fetchedResultsController.object(at: indexPath).isRental == false{
+            if fetchedResultsController.object(at: [0, 0]).isRental == false || logStatFromUserDefault == false{
                 cellLabel.setTitle("Move-in", for: .normal)
-            }else if fetchedResultsController.object(at: indexPath).isRental == true{
+            }else if fetchedResultsController.object(at: [0, 0]).isRental == true{
                 cellLabel.setTitle("Move-out", for: .normal)
             }
         }
@@ -126,7 +129,10 @@ class DetailTableViewController: UITableViewController {
     
     @IBAction func moveRental(_ sender: UIButton) {
         print("moveRental click")
+        let userDefaults = UserDefaults.standard
+        let logStatFromUserDefault = userDefaults.bool(forKey: "logStat")
         
+        if logStatFromUserDefault == true{
         if let moveButton = self.view.viewWithTag(500) as? UIButton {
             if let moveButtonText = moveButton.titleLabel?.text{
             print("button text: ", moveButtonText)
@@ -134,18 +140,46 @@ class DetailTableViewController: UITableViewController {
                 networkController.fetchAddRental(id: Int(id!), completionHandler: { (responseCode) in
                     DispatchQueue.main.async {
                         print("fetchAddRental responseCode:", responseCode)
-                        
+                        if responseCode == 200{
                         let indexPath:IndexPath = [0, 0]
                         let houses = self.fetchedResultsController.object(at: indexPath)
                         houses.isRental = true
                         do {
                             try self.viewContext?.save()
-                            
+                            print("move in action save in local db")
                         } catch {
                             print("Could not save managed object context. \(error)")
                         }
-                        
-                        self.performSegueToReturnBack()
+                            let alert = UIAlertController(
+                                            title: "Move-in success!",
+                                            message: "",
+                                            preferredStyle: .alert)
+
+                                        alert.addAction(
+                                            UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                                print("Move-in alert OK button pressed!")
+                                                DispatchQueue.main.async {
+                                                    self.performSegueToReturnBack()
+                                                }
+                                            })
+                                )
+                            self.present(alert, animated: true, completion: nil)
+                        }else{
+                            let alert = UIAlertController(
+                                            title: "Already full!",
+                                            message: "",
+                                            preferredStyle: .alert)
+
+                                        alert.addAction(
+                                            UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                                print("Move-in alert OK button pressed!")
+                                                DispatchQueue.main.async {
+                                                    self.performSegueToReturnBack()
+                                                }
+                                            })
+                                )
+                            self.present(alert, animated: true, completion: nil)
+                        }
                     }
                 }) { (error) in
                     DispatchQueue.main.async {
@@ -157,17 +191,17 @@ class DetailTableViewController: UITableViewController {
                     networkController.fetchDropRental(id: Int(id!), completionHandler: { (responseCode) in
                         DispatchQueue.main.async {
                             print("fetchDropRental responseCode:", responseCode)
-                            
+
                             let indexPath:IndexPath = [0, 0]
                             let houses = self.fetchedResultsController.object(at: indexPath)
                             houses.isRental = false
                             do {
                                 try self.viewContext?.save()
-                                
+                                print("move out action save in local db")
                             } catch {
                                 print("Could not save managed object context. \(error)")
                             }
-                            
+
                             self.performSegueToReturnBack()
                         }
                     }) { (error) in
@@ -179,8 +213,25 @@ class DetailTableViewController: UITableViewController {
                 }
             }
         }
-        
-        
+        }else{
+            print("no yet login alert")
+            DispatchQueue.main.async {
+            let alert = UIAlertController(
+                            title: "Please login first!",
+                            message: "",
+                            preferredStyle: .alert)
+
+                        alert.addAction(
+                            UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                print("Move-in alert OK button pressed!")
+                                DispatchQueue.main.async {
+                                    self.performSegueToReturnBack()
+                                }
+                            })
+                )
+            self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
 
@@ -244,6 +295,6 @@ extension DetailTableViewController: NSFetchedResultsControllerDelegate {
                     for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         tableView.reloadData()
-        print("upodate detail page")
+//        print("upodate detail page")
     }
 }

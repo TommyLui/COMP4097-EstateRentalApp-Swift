@@ -100,8 +100,6 @@ class HomeTableViewController: UITableViewController {
                 }
             }
         }
-        
-        
     }
     
     @objc func reloadTable() {

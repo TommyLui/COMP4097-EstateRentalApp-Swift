@@ -76,7 +76,59 @@ class HouseListTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let dataNum = fetchedResultsController.sections?[0].numberOfObjects ?? 0
+        print("dataNum: ", dataNum)
+        let userDefaults = UserDefaults.standard
+        let logStatFromUserDefault = userDefaults.bool(forKey: "logStat")
+        let fromPage = userDefaults.string(forKey: "fromPage")
+        
+        if dataNum == 0 && logStatFromUserDefault != true{
+        let alert = UIAlertController(
+                        title: "Not yet login and no local data!",
+                        message: "",
+                        preferredStyle: .alert)
 
+                    alert.addAction(
+                        UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                            print("myRental alert OK button pressed!")
+                            DispatchQueue.main.async {
+                                self.performSegueToReturnBack()
+                            }
+                        })
+                    )
+            self.present(alert, animated: true, completion: nil)
+        }else if dataNum == 0 && logStatFromUserDefault == true{
+            let alert = UIAlertController(
+                            title: "Logined but no record found!",
+                            message: "",
+                            preferredStyle: .alert)
+
+                        alert.addAction(
+                            UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                print("myRental alert OK button pressed!")
+                                DispatchQueue.main.async {
+                                    self.performSegueToReturnBack()
+                                }
+                            })
+                        )
+                self.present(alert, animated: true, completion: nil)
+        }else if dataNum != 0 && logStatFromUserDefault != true && fromPage == "myRental"{
+            let alert = UIAlertController(
+                            title: "Not yet login!",
+                            message: "Data loaded form local!",
+                            preferredStyle: .alert)
+
+                        alert.addAction(
+                            UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                print("myRental alert OK button pressed!")
+                            })
+                        )
+                self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

@@ -79,15 +79,18 @@ class UserViewController: UIViewController {
     }
     @IBAction func myRentalBtn(_ sender: UIButton) {
         print("myRentalBtn click")
+        let userDefaults = UserDefaults.standard
+        userDefaults.set("myRental", forKey: "fromPage")
+        let logStatFromUserDefault = userDefaults.bool(forKey: "logStat")
         
-        
+        if logStatFromUserDefault == true {
         networkController.fetchMyRental(completionHandler: { (rental) in
             DispatchQueue.main.async {
                 print("fetchMyRental data:", rental)
-                let userDefaults = UserDefaults.standard
-                userDefaults.set("myRental", forKey: "fromPage")
+                
                 
                 self.rental = rental
+                self.rentalIDArray = []
                 self.rental.forEach { (rental) in
                     self.rentalIDArray.append(rental.id)
                 }
@@ -109,22 +112,28 @@ class UserViewController: UIViewController {
                         for j in 0...(self.rentalIDArray.count - 1){
                             if houses.id == self.rentalIDArray[j]{
                                 houses.isRental = true
+                                print(houses.id, "isRental = true")
                             }
                         }
                     }
                     do {
                         try self.viewContext?.save()
-                        
+                        print("local rental data correct")
                     } catch {
                         print("Could not save managed object context. \(error)")
                     }
                 }
+                
+                
             }
         }) { (error) in
             DispatchQueue.main.async {
                print("error fetchMyRental")
             }
         }
+        }
+        
+        
     }
     
     
@@ -158,8 +167,6 @@ extension UserViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChange anObject: Any, at indexPath: IndexPath?,
                     for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-
-//        tableView.reloadData()
-//        print("upodate user page")
+        
     }
 }
