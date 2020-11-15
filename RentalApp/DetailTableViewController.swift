@@ -46,15 +46,17 @@ class DetailTableViewController: UITableViewController {
         
         let dataController = AppDelegate.dataController!
         viewContext = dataController.persistentContainer.viewContext
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
-    // MARK: - Table view data source
+    override func viewDidAppear(_ animated: Bool) {
+        if let cellLabel = self.view.viewWithTag(500) as? UIButton {
+            if fetchedResultsController.object(at: [0, 0]).isRental == false{
+                cellLabel.setTitle("Move-in", for: .normal)
+            }else if fetchedResultsController.object(at: [0, 0]).isRental == true{
+                cellLabel.setTitle("Move-out", for: .normal)
+            }
+        }
+    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -111,7 +113,8 @@ class DetailTableViewController: UITableViewController {
         }
         
         if let cellLabel = cell.viewWithTag(500) as? UIButton {
-            if fetchedResultsController.object(at: [0, 0]).isRental == false || logStatFromUserDefault == false{
+//        if let cellLabel = self.view.viewWithTag(500) as? UIButton {
+            if fetchedResultsController.object(at: [0, 0]).isRental == false{
                 cellLabel.setTitle("Move-in", for: .normal)
             }else if fetchedResultsController.object(at: [0, 0]).isRental == true{
                 cellLabel.setTitle("Move-out", for: .normal)

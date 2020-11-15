@@ -71,7 +71,7 @@ class DataController {
                                         houseManagedObject.isRental = house.isRental ?? false
                                         houseManagedObject.mapLat = house.mapLat ?? 0
                                         houseManagedObject.mapLon = house.mapLon ?? 0
-                                        print("data save")
+//                                        print("data save")
                                     }
                                     do {
                                         print("managedObjectContext save")

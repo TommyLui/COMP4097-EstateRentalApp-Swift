@@ -143,7 +143,6 @@
                                         <button opaque="NO" tag="500" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ana-OO-81D">
                                             <rect key="frame" x="0.0" y="468" width="180" height="50"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Button"/>
                                             <connections>
                                                 <action selector="moveRental:" destination="Wth-Mc-ANf" eventType="touchUpInside" id="WqN-RD-Lxw"/>
                                             </connections>

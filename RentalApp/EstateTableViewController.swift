@@ -137,6 +137,6 @@ extension EstateTableViewController: NSFetchedResultsControllerDelegate {
                     for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         tableView.reloadData()
-        print("upodate estate page")
+//        print("upodate estate page")
     }
 }
