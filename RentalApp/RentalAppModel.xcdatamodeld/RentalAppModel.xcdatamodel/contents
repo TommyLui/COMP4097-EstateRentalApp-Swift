@@ -10,12 +10,14 @@
         <attribute name="id" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="image_URL" optional="YES" attributeType="String"/>
         <attribute name="isRental" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="mapLat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="mapLon" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="occupied" optional="YES" attributeType="String"/>
         <attribute name="property_title" optional="YES" attributeType="String"/>
         <attribute name="rent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="updatedAt" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="House" positionX="-63" positionY="-18" width="128" height="238"/>
+        <element name="House" positionX="-63" positionY="-18" width="128" height="268"/>
     </elements>
 </model>

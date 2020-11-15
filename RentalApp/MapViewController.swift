@@ -10,7 +10,7 @@ import MapKit
 import CoreData
 
 class MapViewController: UIViewController {
-
+    
     @IBOutlet weak var mapView: MKMapView!
     var id: Double?
     var house: Houses?
@@ -55,40 +55,88 @@ class MapViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
         let house = fetchedResultsController.object(at: [0, 0])
-        let placeToSearchWithSpace = "Hong%20Kong, " + house.estate!
-        let placeToSearch = placeToSearchWithSpace.replacingOccurrences(of: " ", with: "%20")
-//        print("search:", placeToSearch)
+        let mapLatFromDb = house.mapLat
+        let mapLonFromDb = house.mapLon
         
-        networkController.fetchLocation(placeToSearch: placeToSearch, completionHandler: { (locationInfo) in
+        if mapLatFromDb == 0 && mapLonFromDb == 0{
             DispatchQueue.main.async {
-                print("fetchLocation success")
-                self.locationInfo = locationInfo
-                print(self.locationInfo![0].lat, self.locationInfo![0].lon)
-                let campusLocation = CLLocation(latitude: Double(self.locationInfo![0].lat)!, longitude: Double(self.locationInfo![0].lon)!)
-                       self.mapView.setCenterLocation(campusLocation)
-                       self.mapView.addAnnotation(Estate(title: house.property_title,
-                                                         estateName: house.estate!, coordinate: CLLocationCoordinate2D(latitude: Double(self.locationInfo![0].lat)!, longitude: Double(self.locationInfo![0].lon)!)))
+                let alert = UIAlertController(
+                    title: "Load map data from network",
+                    message: "",
+                    preferredStyle: .alert)
+                
+                alert.addAction(
+                    UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                        print("Move-in alert OK button pressed!")
+                        DispatchQueue.main.async {
+                            let placeToSearchWithSpace = "Hong%20Kong, " + house.estate!
+                            let placeToSearch = placeToSearchWithSpace.replacingOccurrences(of: " ", with: "%20")
+                            self.networkController.fetchLocation(placeToSearch: placeToSearch, completionHandler: { (locationInfo) in
+                                DispatchQueue.main.async {
+                                    print("fetchLocation success")
+                                    self.locationInfo = locationInfo
+                                    print(self.locationInfo![0].lat, self.locationInfo![0].lon)
+                                    let campusLocation = CLLocation(latitude: Double(self.locationInfo![0].lat)!, longitude: Double(self.locationInfo![0].lon)!)
+                                    self.mapView.setCenterLocation(campusLocation)
+                                    self.mapView.addAnnotation(Estate(title: house.property_title,
+                                                                      estateName: house.estate!, coordinate: CLLocationCoordinate2D(latitude: Double(self.locationInfo![0].lat)!, longitude: Double(self.locationInfo![0].lon)!)))
+                                    let indexPath:IndexPath = [0, 0]
+                                    let houses = self.fetchedResultsController.object(at: indexPath)
+                                    houses.mapLat = Double(self.locationInfo![0].lat)!
+                                    houses.mapLon = Double(self.locationInfo![0].lon)!
+                                    do {
+                                        try self.viewContext?.save()
+                                        print("map data save in local db")
+                                    } catch {
+                                        print("Could not save managed object context. \(error)")
+                                    }
+                                }
+                            }) { (error) in
+                                DispatchQueue.main.async {
+                                    print("fetchLocation fail")
+                                }
+                            }}
+                    })
+                )
+                self.present(alert, animated: true, completion: nil)
             }
-        }) { (error) in
+            
+        }else{
             DispatchQueue.main.async {
-                print("fetchLocation fail")
+                let alert = UIAlertController(
+                    title: "Load map data from local",
+                    message: "",
+                    preferredStyle: .alert)
+                
+                alert.addAction(
+                    UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                        print("Move-in alert OK button pressed!")
+                        DispatchQueue.main.async {
+                            let campusLocation = CLLocation(latitude: mapLatFromDb, longitude: mapLonFromDb)
+                            self.mapView.setCenterLocation(campusLocation)
+                            self.mapView.addAnnotation(Estate(title: house.property_title,
+                                                              estateName: house.estate!, coordinate: CLLocationCoordinate2D(latitude: mapLatFromDb, longitude: mapLonFromDb)))
+                        }
+                    })
+                )
+                self.present(alert, animated: true, completion: nil)
             }
         }
-
+        
         
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 private extension MKMapView {
@@ -107,7 +155,7 @@ private extension MKMapView {
 }
 
 extension MapViewController: NSFetchedResultsControllerDelegate {
-
+    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChange anObject: Any, at indexPath: IndexPath?,
                     for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {

@@ -294,7 +294,7 @@ extension DetailTableViewController: NSFetchedResultsControllerDelegate {
                     didChange anObject: Any, at indexPath: IndexPath?,
                     for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
-        tableView.reloadData()
+//        tableView.reloadData()
 //        print("upodate detail page")
     }
 }

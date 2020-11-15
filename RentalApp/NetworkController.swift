@@ -354,6 +354,8 @@ struct Houses: Codable {
     let h_Property: String
     let occupied: String?
     var isRental:Bool?
+    var mapLat: Double?
+    var mapLon: Double?
 }
 
 struct UserInfo: Codable {

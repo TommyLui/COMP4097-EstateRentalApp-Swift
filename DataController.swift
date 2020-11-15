@@ -69,6 +69,8 @@ class DataController {
                                         houseManagedObject.h_Property = house.h_Property
                                         houseManagedObject.occupied = house.occupied
                                         houseManagedObject.isRental = house.isRental ?? false
+                                        houseManagedObject.mapLat = house.mapLat ?? 0
+                                        houseManagedObject.mapLon = house.mapLon ?? 0
                                         print("data save")
                                     }
                                     do {
