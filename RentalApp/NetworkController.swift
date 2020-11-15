@@ -74,31 +74,12 @@ class NetworkController {
         task.resume()
     }
     
-//    func checkNetwork() -> Bool{
-//            let imageUrl: String = "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg"
-//            var result: Bool = false
-//            fetchImage(for: imageUrl, completionHandler: { (data) in
-//                DispatchQueue.main.async {
-//                    result = true
-//                }
-//            }) { (error) in
-//                DispatchQueue.main.async {
-//                    result = false
-//                }
-//            }
-//
-//
-//            return true
-//     }
-    
-    
-    //userID: String, userPW:String,
-    func fetchLogin(completionHandler: @escaping (UserInfo) -> (),
+    func fetchLogin(_ userID: String,_ userPW:String, completionHandler: @escaping (UserInfo) -> (),
                     errorHandler: @escaping (Error?) -> ()) {
         
         print("fetchLogin called")
         
-        let parameters = ["username": "Brittany", "password": "Hutt"]
+        let parameters = ["username": userID, "password": userPW]
         
         let url = URL(string: "https://morning-plains-00409.herokuapp.com/user/login")!
         

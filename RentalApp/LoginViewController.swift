@@ -68,137 +68,136 @@ class LoginViewController: UIViewController {
         
         if logStatFromUserDefault == false{
             
-
+            
             networkController.fetchImage(for: "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg", completionHandler: { (networkTest) in
                 DispatchQueue.main.async {
-                
-                if let accountText = self.view.viewWithTag(100) as? UITextField {
-                    print(accountText.text!)
-                    if let passwordText = self.view.viewWithTag(200) as? UITextField {
-                        print(passwordText.text!)
-                        self.networkController.fetchLogin(completionHandler: { (data) in
-                            DispatchQueue.main.async {
-                                print("login success")
-                                //                        print(data.username)
-                                //                        print(data.avatar)
-                                let userDefaults = UserDefaults.standard
-                                userDefaults.set(data.username, forKey: "userName")
-                                userDefaults.set(data.avatar, forKey: "userPhoto")
-                                userDefaults.set(true, forKey: "logStat")
-                                
-                                self.networkController.fetchMyRental(completionHandler: { (rental) in
-                                    DispatchQueue.main.async {
-                                        print("fetchMyRental data:", rental)
-                                        
-                                        self.rental = rental
-                                        self.rentalIDArray = []
-                                        self.rental.forEach { (rental) in
-                                            self.rentalIDArray.append(rental.id)
-                                        }
-                                        print("rental ID list : ", self.rentalIDArray)
-                                        
-                                        if !self.rentalIDArray.isEmpty{
-                                            let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
-                                            print("houses in db:", numberOfObjects)
+                    
+                    if let accountText = self.view.viewWithTag(100) as? UITextField {
+                        print(accountText.text!)
+                        if let passwordText = self.view.viewWithTag(200) as? UITextField {
+                            print(passwordText.text!)
+                            self.networkController.fetchLogin(accountText.text!, passwordText.text!, completionHandler: { (data) in
+                                DispatchQueue.main.async {
+                                    print("login success")
+                                    //                        print(data.username)
+                                    //                        print(data.avatar)
+                                    let userDefaults = UserDefaults.standard
+                                    userDefaults.set(data.username, forKey: "userName")
+                                    userDefaults.set(data.avatar, forKey: "userPhoto")
+                                    userDefaults.set(true, forKey: "logStat")
+                                    
+                                    self.networkController.fetchMyRental(completionHandler: { (rental) in
+                                        DispatchQueue.main.async {
+                                            print("fetchMyRental data:", rental)
                                             
-                                            if numberOfObjects >= 1{
-                                                for i in 0...(numberOfObjects - 1) {
-                                                    let indexPath:IndexPath = [0, i]
-                                                    let houses = self.fetchedResultsController.object(at: indexPath)
-                                                    houses.isRental = false
-                                                }
+                                            self.rental = rental
+                                            self.rentalIDArray = []
+                                            self.rental.forEach { (rental) in
+                                                self.rentalIDArray.append(rental.id)
+                                            }
+                                            print("rental ID list : ", self.rentalIDArray)
+                                            
+                                            if !self.rentalIDArray.isEmpty{
+                                                let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
+                                                print("houses in db:", numberOfObjects)
                                                 
-                                                for i in 0...(numberOfObjects - 1) {
-                                                    let indexPath:IndexPath = [0, i]
-                                                    let houses = self.fetchedResultsController.object(at: indexPath)
-                                                    for j in 0...(self.rentalIDArray.count - 1){
-                                                        if houses.id == self.rentalIDArray[j]{
-                                                            houses.isRental = true
-                                                            print(houses.id, "isRental = true")
+                                                if numberOfObjects >= 1{
+                                                    for i in 0...(numberOfObjects - 1) {
+                                                        let indexPath:IndexPath = [0, i]
+                                                        let houses = self.fetchedResultsController.object(at: indexPath)
+                                                        houses.isRental = false
+                                                    }
+                                                    
+                                                    for i in 0...(numberOfObjects - 1) {
+                                                        let indexPath:IndexPath = [0, i]
+                                                        let houses = self.fetchedResultsController.object(at: indexPath)
+                                                        for j in 0...(self.rentalIDArray.count - 1){
+                                                            if houses.id == self.rentalIDArray[j]{
+                                                                houses.isRental = true
+                                                                print(houses.id, "isRental = true")
+                                                            }
                                                         }
                                                     }
-                                                }
-                                                do {
-                                                    try self.viewContext?.save()
-                                                    print("local rental data correct")
-                                                } catch {
-                                                    print("Could not save managed object context. \(error)")
+                                                    do {
+                                                        try self.viewContext?.save()
+                                                        print("local rental data correct")
+                                                    } catch {
+                                                        print("Could not save managed object context. \(error)")
+                                                    }
                                                 }
                                             }
                                         }
+                                    }) { (error) in
+                                        DispatchQueue.main.async {
+                                            print("error fetchMyRental")
+                                        }
                                     }
-                                }) { (error) in
-                                    DispatchQueue.main.async {
-                                        print("error fetchMyRental")
-                                    }
+                                    
+                                    self.performSegueToReturnBack()
                                 }
-                                
-                                self.performSegueToReturnBack()
-                            }
-                        }) { (error) in
-                            DispatchQueue.main.async {
-                                print("login fail")
-                                
-                                let alert = UIAlertController(
-                                    title: "Fail to login!",
-                                    message: "Wrong account or password!",
-                                    preferredStyle: .alert)
-                                
-                                alert.addAction(
-                                    UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                                        print("Login alert OK button pressed!")
-                                    }
+                            }) { (error) in
+                                DispatchQueue.main.async {
+                                    print("login fail")
+                                    
+                                    let alert = UIAlertController(
+                                        title: "Fail to login!",
+                                        message: "Wrong account or password!",
+                                        preferredStyle: .alert)
+                                    
+                                    alert.addAction(
+                                        UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                            print("Login alert OK button pressed!")
+                                        }
+                                        )
                                     )
-                                )
-                                self.present(alert, animated: true, completion: nil)
+                                    self.present(alert, animated: true, completion: nil)
+                                }
                             }
                         }
                     }
+                    
+                    
+                    
                 }
+            }) { (error) in
+                DispatchQueue.main.async {
+                    print("Network fail to login")
                     
-            
+                    let alert = UIAlertController(
+                        title: "Fail to login!",
+                        message: "Network fail!",
+                        preferredStyle: .alert)
                     
-            }
-        }) { (error) in
-            DispatchQueue.main.async {
-                print("Network fail to login")
-
-                let alert = UIAlertController(
-                    title: "Fail to login!",
-                    message: "Network fail!",
-                    preferredStyle: .alert)
-
-                alert.addAction(
-                    UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                        print("Login alert OK button pressed!")
-                    }
+                    alert.addAction(
+                        UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                            print("Login alert OK button pressed!")
+                        }
+                        )
                     )
-                )
-                self.present(alert, animated: true, completion: nil)
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
-        }
             
-        
+            
         }else{
             
             ////check network success start
             networkController.fetchImage(for: "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg", completionHandler: { (networkTest) in
                 DispatchQueue.main.async {
-            ////check network success end
-            
+                    ////check network success end
+                    
                     self.networkController.fetchLogout(completionHandler: { (responseCode) in
-                DispatchQueue.main.async {
-                    self.performSegueToReturnBack()
-                    print("logout success")
-                    let userDefaults = UserDefaults.standard
-                    userDefaults.set(false, forKey: "logStat")
-                }
-            }) { (error) in
-                DispatchQueue.main.async {
-                    print("logout fail")
-                }
-            }
-            
+                        DispatchQueue.main.async {
+                            self.performSegueToReturnBack()
+                            print("logout success")
+                            let userDefaults = UserDefaults.standard
+                            userDefaults.set(false, forKey: "logStat")
+                        }
+                    }) { (error) in
+                        DispatchQueue.main.async {
+                            print("logout fail")
+                        }
+                    }
                     ////network error start
                     
                 }

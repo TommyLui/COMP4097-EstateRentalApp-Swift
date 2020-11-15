@@ -13,7 +13,6 @@ class HomeTableViewController: UITableViewController {
     var houses: [Houses] = []
     var viewContext: NSManagedObjectContext?
     var networkController = NetworkController()
-    
     var rental: [Houses] = []
     var rentalIDArray: [Double] = []
     
@@ -55,61 +54,60 @@ class HomeTableViewController: UITableViewController {
         
         networkController.fetchImage(for: "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg", completionHandler: { (networkTest) in
             DispatchQueue.main.async {
-        
-        if logStatFromUserDefault == true{
-            self.networkController.fetchMyRental(completionHandler: { (rental) in
-                DispatchQueue.main.async {
-                    print("fetchMyRental data:", rental)
-                    let userDefaults = UserDefaults.standard
-                    userDefaults.set("myRental", forKey: "fromPage")
-                    
-                    self.rental = rental
-                    self.rentalIDArray = []
-                    self.rental.forEach { (rental) in
-                        self.rentalIDArray.append(rental.id)
-                    }
-                    print("rental ID list : ", self.rentalIDArray)
-                    
-                    if !self.rentalIDArray.isEmpty{
-                        let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
-                        print("houses in db:", numberOfObjects)
-                        
-                        for i in 0...(numberOfObjects - 1) {
-                            let indexPath:IndexPath = [0, i]
-                            let houses = self.fetchedResultsController.object(at: indexPath)
-                            houses.isRental = false
-                        }
-                        
-                        for i in 0...(numberOfObjects - 1) {
-                            let indexPath:IndexPath = [0, i]
+                
+                if logStatFromUserDefault == true{
+                    self.networkController.fetchMyRental(completionHandler: { (rental) in
+                        DispatchQueue.main.async {
+                            print("fetchMyRental data:", rental)
+                            let userDefaults = UserDefaults.standard
+                            userDefaults.set("myRental", forKey: "fromPage")
+                            self.rental = rental
+                            self.rentalIDArray = []
+                            self.rental.forEach { (rental) in
+                                self.rentalIDArray.append(rental.id)
+                            }
+                            print("rental ID list : ", self.rentalIDArray)
                             
-                            let houses = self.fetchedResultsController.object(at: indexPath)
-                            for j in 0...(self.rentalIDArray.count - 1){
-                                if houses.id == self.rentalIDArray[j]{
-                                    houses.isRental = true
+                            if !self.rentalIDArray.isEmpty{
+                                let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
+                                print("houses in db:", numberOfObjects)
+                                
+                                for i in 0...(numberOfObjects - 1) {
+                                    let indexPath:IndexPath = [0, i]
+                                    let houses = self.fetchedResultsController.object(at: indexPath)
+                                    houses.isRental = false
+                                }
+                                
+                                for i in 0...(numberOfObjects - 1) {
+                                    let indexPath:IndexPath = [0, i]
+                                    
+                                    let houses = self.fetchedResultsController.object(at: indexPath)
+                                    for j in 0...(self.rentalIDArray.count - 1){
+                                        if houses.id == self.rentalIDArray[j]{
+                                            houses.isRental = true
+                                        }
+                                    }
+                                }
+                                do {
+                                    try self.viewContext?.save()
+                                    
+                                } catch {
+                                    print("Could not save managed object context. \(error)")
                                 }
                             }
                         }
-                        do {
-                            try self.viewContext?.save()
-                            
-                        } catch {
-                            print("Could not save managed object context. \(error)")
+                    }) { (error) in
+                        DispatchQueue.main.async {
+                            print("error fetchMyRental")
                         }
                     }
                 }
-            }) { (error) in
-                DispatchQueue.main.async {
-                    print("error fetchMyRental")
-                }
-            }
-        }
-        
+                
             }
         }) { (error) in
             DispatchQueue.main.async {
                 print("Network fail to init db")
-
+                
                 let alert = UIAlertController(
                     title: "Fail to load data from network!",
                     message: "Network fail!",
@@ -132,79 +130,79 @@ class HomeTableViewController: UITableViewController {
         
         networkController.fetchImage(for: "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg", completionHandler: { (networkTest) in
             DispatchQueue.main.async {
-        
-        let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
-        print("houses in db:", numberOfObjects)
-        
-        if numberOfObjects >= 1{
-            for i in 0...(numberOfObjects - 1) {
-                let indexPath:IndexPath = [0, i]
-                let houses = self.fetchedResultsController.object(at: indexPath)
-                self.viewContext?.delete(houses)
-            }
-            
-            do {
-                try self.viewContext?.save()
-                print("delete db data finish")
-            } catch {
-                print("Could not save managed object context. \(error)")
-            }
-        }
-        
-        let dataController = AppDelegate.dataController!
-        dataController.seedData()
-        
-        let userDefaults = UserDefaults.standard
-        let logStatFromUserDefault = userDefaults.bool(forKey: "logStat")
-        
-        if logStatFromUserDefault == true{
-            self.networkController.fetchMyRental(completionHandler: { (rental) in
-                DispatchQueue.main.async {
-                    print("fetchMyRental data:", rental)
-                    let userDefaults = UserDefaults.standard
-                    userDefaults.set("myRental", forKey: "fromPage")
-                    
-                    self.rental = rental
-                    self.rentalIDArray = []
-                    self.rental.forEach { (rental) in
-                        self.rentalIDArray.append(rental.id)
+                
+                let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
+                print("houses in db:", numberOfObjects)
+                
+                if numberOfObjects >= 1{
+                    for i in 0...(numberOfObjects - 1) {
+                        let indexPath:IndexPath = [0, i]
+                        let houses = self.fetchedResultsController.object(at: indexPath)
+                        self.viewContext?.delete(houses)
                     }
-                    print("rental ID list : ", self.rentalIDArray)
                     
-                    if !self.rentalIDArray.isEmpty{
-                        let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
-                        print("houses in db:", numberOfObjects)
-                        
-                        for i in 0...(numberOfObjects - 1) {
-                            let indexPath:IndexPath = [0, i]
-                            let houses = self.fetchedResultsController.object(at: indexPath)
-                            houses.isRental = false
-                        }
-                        
-                        for i in 0...(numberOfObjects - 1) {
-                            let indexPath:IndexPath = [0, i]
+                    do {
+                        try self.viewContext?.save()
+                        print("delete db data finish")
+                    } catch {
+                        print("Could not save managed object context. \(error)")
+                    }
+                }
+                
+                let dataController = AppDelegate.dataController!
+                dataController.seedData()
+                
+                let userDefaults = UserDefaults.standard
+                let logStatFromUserDefault = userDefaults.bool(forKey: "logStat")
+                
+                if logStatFromUserDefault == true{
+                    self.networkController.fetchMyRental(completionHandler: { (rental) in
+                        DispatchQueue.main.async {
+                            print("fetchMyRental data:", rental)
+                            let userDefaults = UserDefaults.standard
+                            userDefaults.set("myRental", forKey: "fromPage")
                             
-                            let houses = self.fetchedResultsController.object(at: indexPath)
-                            for j in 0...(self.rentalIDArray.count - 1){
-                                if houses.id == self.rentalIDArray[j]{
-                                    houses.isRental = true
+                            self.rental = rental
+                            self.rentalIDArray = []
+                            self.rental.forEach { (rental) in
+                                self.rentalIDArray.append(rental.id)
+                            }
+                            print("rental ID list : ", self.rentalIDArray)
+                            
+                            if !self.rentalIDArray.isEmpty{
+                                let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
+                                print("houses in db:", numberOfObjects)
+                                
+                                for i in 0...(numberOfObjects - 1) {
+                                    let indexPath:IndexPath = [0, i]
+                                    let houses = self.fetchedResultsController.object(at: indexPath)
+                                    houses.isRental = false
+                                }
+                                
+                                for i in 0...(numberOfObjects - 1) {
+                                    let indexPath:IndexPath = [0, i]
+                                    
+                                    let houses = self.fetchedResultsController.object(at: indexPath)
+                                    for j in 0...(self.rentalIDArray.count - 1){
+                                        if houses.id == self.rentalIDArray[j]{
+                                            houses.isRental = true
+                                        }
+                                    }
+                                }
+                                do {
+                                    try self.viewContext?.save()
+                                    
+                                } catch {
+                                    print("Could not save managed object context. \(error)")
                                 }
                             }
                         }
-                        do {
-                            try self.viewContext?.save()
-                            
-                        } catch {
-                            print("Could not save managed object context. \(error)")
+                    }) { (error) in
+                        DispatchQueue.main.async {
+                            print("error fetchMyRental")
                         }
                     }
                 }
-            }) { (error) in
-                DispatchQueue.main.async {
-                    print("error fetchMyRental")
-                }
-            }
-        }
             }
         }) { (error) in
             DispatchQueue.main.async {
