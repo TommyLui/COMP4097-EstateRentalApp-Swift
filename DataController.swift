@@ -46,7 +46,7 @@ class DataController {
         }
     }
     
-    private func seedData() {
+    public func seedData() {
         print("seedData called")
             networkController.fetchHouses(completionHandler:
                             { (houses) in DispatchQueue.main.async {

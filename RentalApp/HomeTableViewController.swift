@@ -104,8 +104,27 @@ class HomeTableViewController: UITableViewController {
     
     @objc func reloadTable() {
         print("refresh action")
-//        let dataControllerNew = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
-//        viewContext = dataControllerNew.persistentContainer.viewContext
+        
+        let numberOfObjects:Int = self.fetchedResultsController.sections?[0].numberOfObjects ?? 0
+        print("houses in db:", numberOfObjects)
+        
+        if numberOfObjects >= 1{
+        for i in 0...(numberOfObjects - 1) {
+            let indexPath:IndexPath = [0, i]
+            let houses = self.fetchedResultsController.object(at: indexPath)
+            self.viewContext?.delete(houses)
+        }
+            
+        do {
+            try self.viewContext?.save()
+            print("delete db data finish")
+        } catch {
+            print("Could not save managed object context. \(error)")
+        }
+        }
+        
+        let dataController = AppDelegate.dataController!
+        dataController.seedData()
         
         self.tableView.reloadData()
         
