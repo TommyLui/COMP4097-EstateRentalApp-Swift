@@ -68,7 +68,6 @@ class LoginViewController: UIViewController {
         
         if logStatFromUserDefault == false{
             
-            
             networkController.fetchImage(for: "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg", completionHandler: { (networkTest) in
                 DispatchQueue.main.async {
                     
